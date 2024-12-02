@@ -1,0 +1,144 @@
+\mode<presentation>
+
+\setbeamertemplate{background}
+{%
+  \begin{tikzpicture}
+    \ifnum\thepage=1\relax%
+    \useasboundingbox (0,0) rectangle(\the\paperwidth, \the\paperheight);
+    \fill[color=greyc] (0,0) rectangle (0.75*\the\paperwidth, \the\paperheight);
+    \fill[color=\GREYC@titlegraphicbackground] (0.75*\the\paperwidth,0) rectangle (\the\paperwidth, \the\paperheight);
+    \node[inner sep=0pt] (titlegraphic) at (\the\paperwidth, 0.5*\the\paperheight)
+    {\includegraphics[width=0.5\paperwidth,height=\Gin@nat@height,keepaspectratio]{\GREYC@titlegraphic}};
+    \node[inner sep=0pt] (traits) at (14.5, 8.2) {\includegraphics[height=3.cm]{traits.pdf}};
+    \hskip-10pt
+    \node[inner sep=0pt] (logo)  at (2.7, 1.2) {\ifthenelse{\equal{\lang}{english}}{\includegraphics[height=1.cm]{\GREYC@logoen}}{\includegraphics[height=1.cm]{\GREYC@logofr}}};
+    \node[inner sep=0pt] (logo1) at (6.5, 1.2) {\includegraphics[height=1.cm]{Logo_NU_blanc.pdf}};
+    \node[inner sep=0pt] (logo2) at (8.0, 1.2) {\includegraphics[height=1.cm]{Logo_Unicaen_blanc.pdf}};
+    \node[inner sep=0pt] (logo3) at (9.5, 1.2) {\includegraphics[height=1.cm]{Logo_Ensicaen_blanc.pdf}};
+    \node[inner sep=0pt] (logo4) at (11.0, 1.2) {\includegraphics[height=1.cm]{Logo_Cnrs_blanc.pdf}};
+    \else
+    \fill[white,opacity=1] (0,0) rectangle (\the\paperwidth, \the\paperheight);
+    \fi
+  \end{tikzpicture}
+}
+
+\defbeamertemplate*{title page}{greyc}[1][]
+{%
+    \newlength\beamertitlebox
+    \setlength\beamertitlebox{\dimexpr0.75\paperwidth-\Gm@lmargin}
+    \begingroup
+    \hskip-10pt
+    \begin{beamercolorbox}[sep=0pt, wd=\beamertitlebox, #1]{title}
+        \usebeamerfont{title}{\MakeUppercase\inserttitle}\par%
+        \ifx\insertsubtitle\@empty\par%
+        \else%
+          \vskip0.25em%
+          {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+        \fi%
+    \end{beamercolorbox}\vskip2em
+    \hskip-10pt
+    \begin{beamercolorbox}[sep=0pt, wd=\beamertitlebox, #1]{author}
+        \usebeamerfont{author}\insertauthor%
+    \end{beamercolorbox}\vskip1em
+    \hskip-10pt
+    \begin{beamercolorbox}[sep=0pt, wd=\beamertitlebox, #1]{institute}
+        \ifx\insertinstitute\@empty\par%
+        \else%
+            \usebeamerfont{institute}\insertinstitute%
+        \fi        
+    \end{beamercolorbox}\vskip1em
+    \hskip-10pt
+    \begin{beamercolorbox}[sep=0pt, wd=\beamertitlebox, #1]{email}
+        \ifx\insertemail\@empty\par%
+          \ifx\insertweb\@empty\par%
+          \else%
+            \usebeamerfont{web}\texttt{\insertweb}
+          \fi
+        \else%
+            \usebeamerfont{email}\texttt{\insertemail}
+            \ifx\insertweb\@empty\par%
+            \else%
+              \\\usebeamerfont{web}\texttt{\insertweb}
+            \fi
+        \fi
+    \end{beamercolorbox}
+    \endgroup
+}
+
+
+% the ''Thank you'' page
+\def\makethanks{%
+  \begin{frame}{The end} 
+  \begin{center}
+    %\includegraphics[height=4cm]{thanks.png}\\
+    \begin{Huge}[thank you]\end{Huge}\\
+    \vspace{1cm}
+    Any Questions ?\\
+    \vspace{2cm}
+    \usebeamerfont{email}\texttt{\insertemail}\\
+    \usebeamerfont{web}\texttt{\insertweb}
+  \end{center}
+  \end{frame}
+}
+
+% This is the padding between text elements and the edges of the colorboxes
+\newlength{\theme@hpadding}
+\setlength{\theme@hpadding}{1.5em}
+
+% This is the whitespace on the top of the slides.
+\newlength{\theme@vpadding}
+\setlength{\theme@vpadding}{0.3em}
+
+
+\defbeamertemplate*{footline}{greyc}
+{%
+  \ifnum\thepage=1\relax%
+    % Empty colorbox on titlepage to retain spacing on subsequent pages
+    \begin{beamercolorbox}[wd=\paperwidth,ht=1em,dp=0.5em]{placeholder}%
+    \end{beamercolorbox}%
+  \else%
+    \leavevmode%
+    \begin{beamercolorbox}[center,wd=0.25\paperwidth,ht=1em,dp=0.5em]{author in foot}%
+      \insertshortauthor
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.65\paperwidth,ht=1em,dp=0.5em]{title in foot}%
+      \hspace{\theme@hpadding}\insertshorttitle\hspace{\theme@hpadding}
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[wd=0.1\paperwidth,ht=1em,dp=0.5em]{number in foot}%
+      \hspace{\theme@hpadding}\insertframenumber{} / \inserttotalframenumber
+    \end{beamercolorbox}%
+  \fi
+}
+
+\setbeamertemplate{navigation symbols}{}
+
+\defbeamertemplate*{logo titlepage}{greyc}{\quad\includegraphics[height=1cm]{\GREYC@logoen}}
+
+% logo at the bottom
+%\defbeamertemplate*{logo}{greyc}{
+%  \ifnum\thepage=1\relax%
+%  \else%
+%  \includegraphics[height=3em]{\GREYC@logobgen}
+%  \fi
+%}
+
+% logo at the top
+\addtobeamertemplate{headline}{}{%
+  \ifnum\thepage=1\relax%
+  \else%
+    \ifthenelse{\equal{\lang}{english}}{
+      \begin{tikzpicture}[remember picture,overlay]
+      \node (logobg) at ([shift={(.435\paperwidth,-.1)}]current page.north)  {\includegraphics[height=1.5em]{logo-GREYC-traits.pdf}};
+      \node (logobg) at ([shift={(.41\paperwidth,-.5)}]current page.north)  {\includegraphics[height=3em]{\GREYC@logobgen}};
+      \end{tikzpicture}
+    }{
+      \begin{tikzpicture}[remember picture,overlay]
+      \node (logobg) at ([shift={(.435\paperwidth,-.1)}]current page.north)  {\includegraphics[height=1.5em]{logo-GREYC-traits.pdf}};
+      \node (logobg) at ([shift={(.41\paperwidth,-.5)}]current page.north)  {\includegraphics[height=3em]{\GREYC@logobgfr}};
+      \end{tikzpicture}
+    }
+  \fi
+}
+
+
+\mode<all>

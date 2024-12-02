@@ -1,0 +1,65 @@
+% Name           : beamerthemegreyc.sty
+% Author         : Olivier Lézoray
+% Version        : 1.0
+
+\mode<presentation>
+
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\RequirePackage{etoolbox}
+\RequirePackage{textpos}
+\RequirePackage{ifthen}
+\RequirePackage{framed}
+
+
+% Number items in toc
+\setbeamertemplate{section in toc}[sections numbered]
+\setbeamertemplate{subsection in toc}[subsections numbered]
+
+% set fonts
+\RequirePackage{roboto}
+\usefonttheme{professionalfonts}
+\setbeamerfont{title}{size=\Large,series=\bfseries}
+\setbeamerfont{subtitle}{size=\large, series=\mdseries}
+\setbeamerfont{author}{size=\small, series=\bfseries}
+\setbeamerfont{date}{size=\tiny}
+\setbeamerfont{email}{size=\tiny}
+\setbeamerfont{web}{size=\tiny}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{institute}{size=\tiny}
+
+% set colors
+\usecolortheme{greyc}
+
+% Default logo and graphic
+\gdef\GREYC@logoen{logo-GREYC-dark-en}
+\gdef\GREYC@logofr{logo-GREYC-dark-fr}
+\gdef\GREYC@logobgen{logo-GREYC-en}
+\gdef\GREYC@logobgfr{logo-GREYC-fr}
+\gdef\GREYC@titlegraphic{GREYCTitle}
+\gdef\GREYC@titlegraphicbackground{white}
+
+% set the language default value
+\newcommand{\lang}{english}
+
+\newcommand{\insertemail}{}
+\newcommand{\email}[1]{%
+	\renewcommand{\insertemail}{#1}
+}
+
+\newcommand{\insertweb}{}
+\newcommand{\web}[1]{%
+	\renewcommand{\insertweb}{#1}
+}
+
+\useinnertheme{greyc}
+
+\hypersetup{
+  colorlinks=true,
+  urlcolor=charcoal,
+  linkcolor=charcoal,
+}
+
+
+
+\mode<all>

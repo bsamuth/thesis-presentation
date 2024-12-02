@@ -1,0 +1,54 @@
+\mode<presentation>
+
+% GREYC's colors
+\definecolor{greyc}{RGB}{99,16,88}
+\definecolor{greyc-grey}{RGB}{206,206,206}
+\definecolor{greyc-amacc}{RGB}{148,7,28}
+\definecolor{greyc-codag}{RGB}{89,168,37}
+\definecolor{greyc-elec}{RGB}{12,69,102}
+\definecolor{greyc-image}{RGB}{29,162,211}
+\definecolor{greyc-mad}{RGB}{16,87,36}
+\definecolor{greyc-monebiom}{RGB}{223,70,14}
+\definecolor{white}{RGB}{255,255,255}
+\definecolor{black}{RGB}{0,0,0}
+\definecolor{charcoal}{RGB}{66,66,66}
+
+\setbeamercolor*{title page header}{fg=white}
+\setbeamercolor*{author}{fg=white}
+\setbeamercolor*{date}{fg=white}
+
+\setbeamercolor*{structure}{fg=greyc}
+
+% Title slide
+\setbeamercolor*{titlelike}{fg=white, bg=greyc}
+\setbeamercolor*{subtitle}{parent=title}
+\setbeamercolor*{author}{parent=title}
+\setbeamercolor*{institute}{parent=title}
+\setbeamercolor*{date}{parent=title}
+\setbeamercolor*{email}{parent=title}
+\setbeamercolor*{web}{parent=title}
+\setbeamercolor*{frametitle}{fg=greyc,  bg=}
+
+% Blocks
+\setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+\setbeamercolor{block title alerted}{use=alerted text,fg=white,bg=alerted text.fg!75!black}
+\setbeamercolor{block title example}{use=example text,fg=white,bg=example text.fg!75!black}
+
+\setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+\setbeamercolor{block body alerted}{parent=normal text,use=block title alerted,bg=block title alerted.bg!10!bg}
+\setbeamercolor{block body example}{parent=normal text,use=block title example,bg=block title example.bg!10!bg}
+
+% shaded blocks
+\definecolor{shadecolor}{RGB}{238,233,237}
+
+% footline 
+\setbeamercolor{institute in footline}{fg=black, bg=white}
+\setbeamercolor{section in foot}{fg=white, bg=greyc}
+\setbeamercolor{author in foot}{fg=white, bg=greyc}
+\setbeamercolor{title in foot}{fg=greyc-grey, bg=greyc!20}
+\setbeamercolor{number in foot}{fg=white, bg=greyc}
+
+% Transparent placeholder items
+\setbeamercolor{placeholder}{fg=, bg=}
+
+\mode<all>
