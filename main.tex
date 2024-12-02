@@ -1,0 +1,119 @@
+\documentclass[aspectratio=169, 22pt]{beamer}
+\makeatletter
+\def\input@path{{./sty/}}
+\makeatother
+
+\usetheme{greyc}
+%Choose your language
+\def\lang{english} %set it to english or french to have the logo in the good language
+
+\graphicspath{{./img/}}
+\usepackage{amsmath}
+
+
+\title[Augmenting cognition]{Augmenting cognition through artificial intelligence computing}
+\subtitle{An experimental approach}
+\author[C. Xavier \& H. MacCoy]{Charles Xavier\inst{1}, Hank McCoy\inst{2}}
+\institute[Normandie University]{\inst{1}Normandie Univ, UNICAEN, ENSICAEN, CNRS, GREYC, Caen, FRANCE\\
+\inst{2}Berkeley Artificial Intelligence Research Lab, University of California, Berkeley, USA}
+\email{charles.xavier@unicaen.fr}
+\web{https://cxavier.users.greyc.fr}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage{}
+\end{frame}
+
+\section{Introduction}
+\begin{frame}{Outline}
+  \tableofcontents
+\end{frame}
+\begin{frame}{Outline}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}{Introduction}
+\framesubtitle{Part one}
+\begin{itemize}
+\item bla
+\item bla bla
+\item bla bla bla
+\end{itemize}
+\end{frame}
+
+\begin{frame}{Introduction}
+\framesubtitle{Part two}
+\begin{enumerate}
+\item bla
+\item bla bla
+\item bla bla bla
+\end{enumerate}
+\end{frame}
+
+\section{Second section}
+\begin{frame}
+  \frametitle{The second section}
+  \framesubtitle{The first subsection}
+  
+  An enumerate environment example:
+  \begin{enumerate}
+  \item The first item
+  \item The second item
+  \item The third item
+  \end{enumerate}
+  
+\end{frame}
+
+\begin{frame}
+  \frametitle{The second section}
+  \framesubtitle{The second subsection}    
+
+  \begin{block}{A block environment example}
+    An itemize environment example
+    \begin{itemize}
+    \item The first item
+    \item The second item
+    \item The third item
+    \end{itemize}
+  \end{block}
+\end{frame}
+
+\section{Third Section}
+\begin{frame}{Outline}
+  \tableofcontents[currentsection]
+\end{frame}
+
+\begin{frame}[label=simmonshall]{Text blocks}
+  \framesubtitle{In plain, example, and \alert{alert} flavour}
+  \alert{This text} is highlighted.
+
+  \begin{block}{A plain block}
+    This is a plain block containing some \alert{highlighted text}.
+  \end{block}
+  \begin{exampleblock}{An example block}
+    This is an example block containing some \alert{highlighted text}.
+  \end{exampleblock}
+  \begin{alertblock}{An alert block}
+    This is an alert block containing some \alert{highlighted text}.
+  \end{alertblock}
+\end{frame}
+
+\section{Conclusion}
+\begin{frame}{Outline}
+  \tableofcontents[currentsection,hideothersubsections]
+\end{frame}
+\stepcounter{subsection}
+
+\begin{frame}{Conclusion}
+  %to insert a block without title
+  \begin{shaded}
+    \LARGE A block without title
+  \end{shaded}  
+
+\end{frame}
+
+% the final page
+\makethanks
+
+\end{document}
