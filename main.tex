@@ -8,8 +8,16 @@
 \def\lang{french} %set it to english or french to have the logo in the good language
 
 \graphicspath{{./img/},{./figs/}}
-\usepackage{amsmath}
+\usepackage{amsmath,amsfonts,amssymb,latexsym}
+\usepackage{mathtools,bbm}
 \usepackage[justification=centering]{caption}
+
+\DeclareMathOperator*{\argmin}{argmin}
+\def\x{{\mathbf x}}
+\def\L{{\cal L}}
+\DeclarePairedDelimiter\ceil{\lceil}{\rceil}
+\DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
+
 
 
 \title[Modèles hybrides pour la génération d'images]{Des modèles hybrides combinant représentations neuronales profondes et méthodes non-paramétriques à patchs pour la génération d'images photoréalistes}
@@ -189,16 +197,113 @@
 
 \subsection{Méthodes à patchs}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Principe}
+  \framesubtitle{Définition}
+  \begin{columns}
+    \begin{column}{0.45\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{2.png}
+        \caption{Un patch.}
+      \end{figure}
+    \end{column}
+    
+    \begin{column}{0.55\linewidth}
+      \emph{Image} : $x \in \mathbb{R}^{W \times H \times C}$
+      \begin{itemize}
+        \footnotesize 
+      \item de taille $W \times H$
+      \item à $C$ canaux de couleurs
+      \end{itemize}
+      
+      \vfill
+      \emph{Extraction de patch} : $P$
+      \begin{itemize}
+        \footnotesize 
+      \item Opérateur linéaire
+      \item Extrait des patchs de taille $\sigma \times \sigma$
+      \item Gère les effets de bords
+      \end{itemize}
+
+      \vfill
+      \emph{Position} : $i \in \Omega$
+      \begin{itemize}
+        \footnotesize 
+      \item $\Omega = \{1,\dots,W\}\times\{1,\dots,H\}$
+      \end{itemize}
+
+      \vfill
+      \emph{Patch} : $P(x,i) \in \mathbb{R}^{\sigma \times \sigma \times C}$
+      \begin{itemize}
+        \footnotesize 
+        \item $\forall (u,v) \in \{0,\dots,\sigma-1\}^2,\ P(x,i)_{u, v, \cdot} =
+          x_{i+(u,v)}$
+        \item par simplicité, sous forme vectorisée (\emph{ie.} $\mathbb{R}^{\sigma^2 C}$)
+      \end{itemize}      
+    \end{column}
+  \end{columns}  
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Propriété}
+\begin{frame}{\secname~- \subsecname} 
+  \framesubtitle{Principe}
+  \begin{columns}
+    \begin{column}{0.7\linewidth}
+      Soient $x, y \in \mathbb{R}^{W \times H \times C}$,
+      \begin{block}{Recherche du plus proche voisin}
+        \centering
+        $j^* = \underset{j \in \Omega}{\argmin}\ ||MP(x,i) - MP(y,j)||_2^2$
+      \end{block}
+      {\small avec $M$ un mask appliqué au patch sur les pixels d'intérêts.}
+
+      \vfill
+      \begin{itemize}
+      \item $P(y,j^*)$ est le \alert{patch plus proche voisin} de $P(x,i)$        
+      \end{itemize}
+      \begin{exampleblock}{}
+        \centering
+        \small
+        Puisqu'à chaque $i$ correspond un $j^*$, on peut dans le
+        cadre d'une génération d'image \alert{expliquer} et \alert{reproduire}
+        le procédé vis-à-vis des patchs de $x$.
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.3\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=0.6\textheight]{3.png}
+        \caption{Example d'algorithme de génération par patchs. \alert{TODO: Source}}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \subsection{Auto-encodeurs}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Principe}
+  \begin{columns}
+    \begin{column}{0.45\linewidth}
+
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{4.png}
+        \caption{Example d'auto-encodeur. Ici, un auto-encodeur variationnel. \alert{TODO: Sources}}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.55\linewidth}
+      \begin{block}{Auto-encodeurs}
+        \begin{itemize}
+        \item $E$, encodeur
+        \item $D$, décodeur
+        \item Représentation \alert{latente}
+        \item Procédé d'optimisation d'une \emph{loss} de reconstruction $\mathcal{L}_{\text{rec}}$
+        \end{itemize}
+      \end{block}
+
+      \begin{block}{Objectif de reconstruction}
+        \centering
+        $\underset{E,D}{\min}\ \underset{x \sim p(x)}{\mathbb{E}}\left[\mathcal{L}_{\text{rec}}(x,D(E(x)))\right]$
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 % ============================================
@@ -212,37 +317,139 @@
 
 \subsection{Principe}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Définition du transfert de style}
-\end{frame}
-
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Modélisation du ``style artistique''}
-\end{frame}
-
-\subsection{Motivation}
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Pourquoi le transfert de style ?}
+  \begin{itemize}
+  \item Images ``naturelles'', images ``artistiques'' 
+  \item Style : ensemble de \alert{caractéristiques esthétiques} propres à une image
+  \item Transfert de style : poser le style artistique d'une de
+    référence image $R$ sur une image de contenu $I$, donnant une synthèse
+    $J$.
+    \vspace{1em}
+  \item Le style est \alert{difficile à définir mathématiquement}
+  \item Hypothèse : Le style est contenu dans les patchs d'une image
+  \end{itemize}
 \end{frame}
 
 \subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Patchs plus proches voisins}
+  \begin{columns}
+    \begin{column}{0.3\linewidth}
+      \begin{itemize}
+      \item Injection de détails par le masque $M_k$
+      \item Plus proche voisins (\emph{PatchMatch})
+      \item Multi-échelle
+      \item Contrainte d'occurrences
+      \item Différents espaces (couleurs, \emph{features VGG-16})
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.7\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{5.pdf}
+        \caption{Schéma du transfert de style à une échelle $k$.}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Multi-échelle}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item $W_k$ est la carte des correspondances des patchs de $J_k$ vers ceux de $R_k$.
+      \item Pour passer à l'échelle $W_k\!\uparrow$, il faut agrandir la carte d'un ratio $r > 1$
+      \item Cela nécessite un passage à l'échelle particulier
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Passage à l'échelle}
+        \centering
+        $W\!\!\uparrow^r(p) = \floor*{rW\left(\floor*{\frac{p}{r}}\right) + p - r\floor*{\frac{p}{r}}}$
+      \end{block}
+      \vspace{1em}
+      \begin{exampleblock}{Avantages}
+        \begin{itemize}
+        \item Opération immédiate
+        \item Pas de perte de qualité (flou)
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Pénalisation d'occurrence}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Distance pénalisée}
+        \centering
+        \small
+        $W_k^* \in \argmin_{W \in F}\ \sum_{p \in \Omega} \frac{D_k(p)}{Var(D_k)} - \lambda_W \circ W(p)$
+        
+        $\text{avec} \quad D_k(p) = ||\tilde{J}_k(p) - R_k \circ W(p)||^2$
+      \end{block}
+      \vspace{1em}
+      \begin{block}{Actualisation de la pénalisation}
+        \small
+        \begin{center}
+          $\lambda_W(y) \leftarrow \lambda_W(y) + \delta \partial_y \lambda_W(y) $
+          
+          $\partial_y\lambda_W(y) = \frac{\lvert\left\{p\ |\ y =
+              W(p)\right\}\rvert}{\lvert\Omega_I\rvert} -
+          \frac{\nu(y)}{\lvert\Omega_R\rvert}$
+        \end{center}
+        
+        \begin{itemize}
+        \item Appliquée durant les différentes itérations de la recherche de plus proches voisins
+        \end{itemize}
+      \end{block}    
+    \end{column}
+    
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{6.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \subsection{Résultats}
 \begin{frame}{\secname~- \subsecname}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.9\linewidth]{7.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Pertinence des modèles hybrides}
+        \begin{itemize}
+        \item \emph{``Patch-features''} $\Phi$
+        \item Caractéristiques stylistiques capturées différentes selon $\Phi$
+        \end{itemize}
+      \end{block}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Comparaisons}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{8.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=0.6\linewidth]{9.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 
@@ -259,63 +466,229 @@
 \subsection{Contexte}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération de visages}
+  \begin{itemize}
+  \item Visages : cas souvent étudié dans la génération
+  \item Facile à évaluer qualitativement
+  \item Peuvent être recalés
+  \item Base de données de bonne qualité disponibles
+  \item \emph{CelebA-HQ} : annotations par caractéristiques (genre, couleur de cheveux, lunettes, ...)
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération \emph{``few-shot''}}
+  \begin{itemize}
+  \item Génération avec peu de données
+  \item Ordre de grandeur : Entre 10 et 1000 (voire 10000) échantillons
+  \item Problème difficile : instabilité ou mémorisation à l'apprentissage
+
+    \vspace{1em}
+  \item Plusieurs techniques : nouvelles architectures, augmentation de données, transfert de connaissances, ...
+  \end{itemize}
 \end{frame}
 
 \subsection{\emph{VQGAN}}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{[Esser et al., 2021]}
+  \begin{figure}
+    \includegraphics[width=\linewidth]{10.png}
+  \end{figure}
 \end{frame}
 
 \subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Distance de patchs latents}
+  \begin{figure}
+    \includegraphics[width=\linewidth]{11.pdf}
+  \end{figure}
+  \begin{itemize}
+  \item Représentation latente via VQGAN pré-entraîné sur une grande base de données (FFHQ)
+  \item Réduction de dimension via $R$
+  \item Génération à partir d'une base limitée de visage (CelebA-HQ), pré-encodée dans $E$
+  \item Synthèse d'images latentes, ensuite décodée par $D$
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération séquentielle auto-régressive}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{12.pdf}
+  \end{figure}
 \end{frame}
 
 \subsection{Expériences}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Résultats}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{13a}
+        \includegraphics[width=\linewidth]{13b}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{14a}
+        \includegraphics[width=\linewidth]{14b}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Pertinence de l'auto-encodeur}
+  \begin{columns}
+    \begin{column}{0.4\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{15.png}
+        \caption{L'auto-encodeur n'est pas un générateur à lui seul.}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.6\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{16.png}
+        \caption{Un auto-encodeur spécialisé réalise une fusion photoréaliste des visages au décodage.}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Biais de performance de \emph{VQGAN}}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{19.pdf}
+        \caption{Les histogrammes montrent les erreurs de reconstructions sur
+        6000 échantillons pris dans leur base de données respective (FFHQ et CelebA-HQ).}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item La reconstruction n'est pas plus performante sur la base d'entraînement
+      \item Donc, les chances de mémorisations de visages sont moindres
+      \item {\small Note: les reconstructions par \emph{VQGAN} des visages de
+        CelebA-HQ sont meilleures car la base contient moins d'images de
+        mauvaise qualité.}
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Explicable par design}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item La nature de l'opération de recherche de plus proches voisins permet d'immédiatement expliquer
+        la génération
+      \item Elle garantie \emph{dans une certaine mesure} la relation entre données et génération
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{17.png}
+        \caption{Un auto-encodeur spécialisé réalise une fusion photoréaliste des visages au décodage.}
+      \end{figure}  
+    \end{column}
+  \end{columns}  
 \end{frame}
 
 \subsection{Évaluation}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Comparaison qualitative}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{18.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item Comparaison avec \emph{FastGAN}
+      \item Architecture avec apprentissage adversariel pour la génération en \emph{few-shot}
+      \item Notre méthode est plus stable lorsque le nombre d'exemples est très faible
+      \end{itemize}
+    \end{column}
+  \end{columns}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Comparaison quantitative}
+    \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \includegraphics[width=0.8\linewidth]{20.pdf}
+        \includegraphics[width=0.8\linewidth]{21.pdf}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item Notre méthode est plus stable en présence de très peu de données
+      \item Perte de qualité (précision) par rapport à \emph{FastGAN}
+      \item Diversité des échantillons (rappel) meilleur
+      \end{itemize}
+    \end{column}
+  \end{columns}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Coût computationnel}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{22.png}
+  \end{figure}
+  \begin{itemize}
+  \item En échange d'un coût en paramètres raisonnable, notre méthode
+    \emph{LatentPatch} peut se passer d'entraînement pour des performances
+    similaires à \emph{FastGAN}.
+  \end{itemize}
 \end{frame}
 
 \subsection{Perspectives}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération de texture}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{23.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item Application à la génération (et extension) de textures
+      \item Un auto-encodeur générique est capable de raccorder fidèlement des textures entres elles
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Application aux paysages}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item Application à une autre modalité : les paysages
+      \item \emph{VQGAN} pré-entraîné sur \emph{MS-COCO}
+      \item Les raccords entre patchs sont photoréalistes en termes de
+        textures, mais ne font pas sens sémantiquement.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{24.png}
+      \end{figure}
+    \end{column}
+  \end{columns}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Limites à la généralisation aux grands volumes de données}
+  \framesubtitle{Limites à la généralisation et aux grands volumes de données}
+  \begin{itemize}
+  \item La méthode fonctionne sur des images perceptuellement proches en \emph{few-shot}
+  \item Face à des images trops variées, la méthode peut échouer à faire de raccords de patchs vraisemblables (manque de cohérence spatial)
+  \item La génération avec un grand volume de données à tendance à propager du flou
+  \end{itemize}
 \end{frame}
 
 % ============================================
