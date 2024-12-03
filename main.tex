@@ -5,115 +5,365 @@
 
 \usetheme{greyc}
 %Choose your language
-\def\lang{english} %set it to english or french to have the logo in the good language
+\def\lang{french} %set it to english or french to have the logo in the good language
 
-\graphicspath{{./img/}}
+\graphicspath{{./img/},{./figs/}}
 \usepackage{amsmath}
+\usepackage[justification=centering]{caption}
 
 
-\title[Augmenting cognition]{Augmenting cognition through artificial intelligence computing}
-\subtitle{An experimental approach}
-\author[C. Xavier \& H. MacCoy]{Charles Xavier\inst{1}, Hank McCoy\inst{2}}
-\institute[Normandie University]{\inst{1}Normandie Univ, UNICAEN, ENSICAEN, CNRS, GREYC, Caen, FRANCE\\
-\inst{2}Berkeley Artificial Intelligence Research Lab, University of California, Berkeley, USA}
-\email{charles.xavier@unicaen.fr}
-\web{https://cxavier.users.greyc.fr}
+\title[Modèles hybrides pour la génération d'images]{Des modèles hybrides combinant représentations neuronales profondes et méthodes non-paramétriques à patchs pour la génération d'images photoréalistes}
+\subtitle{}
+\author[Benjamin Samuth]{Benjamin Samuth}
+\institute[Normandie University]{Normandie Univ, UNICAEN, ENSICAEN, CNRS, GREYC, Caen, FRANCE}
+\email{benjamin.samuth@unicaen.fr}
+\web{}
 
 \begin{document}
 
 \begin{frame}
-  \titlepage{}
+  \titlepage
 \end{frame}
 
+% ============================================
+% ============================================
 \section{Introduction}
-\begin{frame}{Outline}
-  \tableofcontents
-\end{frame}
-\begin{frame}{Outline}
-  \tableofcontents[currentsection]
-\end{frame}
-
-\begin{frame}{Introduction}
-\framesubtitle{Part one}
-\begin{itemize}
-\item bla
-\item bla bla
-\item bla bla bla
-\end{itemize}
-\end{frame}
-
-\begin{frame}{Introduction}
-\framesubtitle{Part two}
-\begin{enumerate}
-\item bla
-\item bla bla
-\item bla bla bla
-\end{enumerate}
-\end{frame}
-
-\section{Second section}
 \begin{frame}
-  \frametitle{The second section}
-  \framesubtitle{The first subsection}
-  
-  An enumerate environment example:
-  \begin{enumerate}
-  \item The first item
-  \item The second item
-  \item The third item
-  \end{enumerate}
-  
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
 \end{frame}
 
-\begin{frame}
-  \frametitle{The second section}
-  \framesubtitle{The second subsection}    
-
-  \begin{block}{A block environment example}
-    An itemize environment example
-    \begin{itemize}
-    \item The first item
-    \item The second item
-    \item The third item
-    \end{itemize}
-  \end{block}
+\subsection{Contexte}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Génération d'images~?}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}      
+      \begin{itemize}
+      \item Créer de \alert{nouvelles} images
+      \item Mais fidèles aux données de références
+      \item Avec ou sans d'autres images d'entrée(s)
+      \item Peuvent être conditionnées par un utilisateur
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+    \end{column}
+  \end{columns}
 \end{frame}
 
-\section{Third Section}
-\begin{frame}{Outline}
-  \tableofcontents[currentsection]
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{La rapide évolution du domaine}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{1.png}
+    \caption{L'évolution du domaine de la génération d'images. La
+      \alert{qualité}, mais aussi les \alert{possibilités sémantiques} ont nettement
+      augmenté grâce aux techniques d'apprentissage profond. \alert{TODO: Sources}}
+  \end{figure}
 \end{frame}
 
-\begin{frame}[label=simmonshall]{Text blocks}
-  \framesubtitle{In plain, example, and \alert{alert} flavour}
-  \alert{This text} is highlighted.
 
-  \begin{block}{A plain block}
-    This is a plain block containing some \alert{highlighted text}.
-  \end{block}
-  \begin{exampleblock}{An example block}
-    This is an example block containing some \alert{highlighted text}.
+\subsection{Enjeux et motivations}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Enjeux}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      Les modèles de générations de l'état de l'art sont dans la plupart des cas~:
+      \begin{itemize}
+      \item complexes,
+      \item souvent inconsistents,
+      \item volumineux en paramètres (contrainte matérielle),
+      \item gourmands en données,
+      \item longs et coûteux à entraîner.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{alertblock}{Des conséquences alarmantes}
+      \begin{itemize}
+      \item Désinformation (\emph{Deep Fakes})
+      \item Propagande
+      \item Violation de droit d'auteurs
+      \item Sans sécurisation des données
+      \item Coût écologique (énergie)
+      \end{itemize}        
+      \end{alertblock}
+    \end{column}
+  \end{columns}
+
+  \vfill
+  \begin{exampleblock}{}
+    \centering
+  À l'heure actuelle, les modèles de génération posent des
+  \alert{problèmes} à la fois \alert{éthique} et \alert{de société}.
   \end{exampleblock}
-  \begin{alertblock}{An alert block}
-    This is an alert block containing some \alert{highlighted text}.
-  \end{alertblock}
 \end{frame}
 
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Challenges}
+  \begin{center}
+    \textbf{Quels critères pour faire face à ces enjeux ?}
+  \end{center}
+  \begin{columns}
+    \begin{column}{0.33\linewidth}
+      \begin{block}{Modèles photoréalistes}
+        \begin{itemize}
+        \item \small Qualité d'images
+        \item \small Fidélité aux données
+        \item \small Génération variée
+        \end{itemize}
+      \end{block}
+      \vfill
+    \end{column}
+    \begin{column}{0.33\linewidth}
+      \begin{block}{Modèles légers}        
+        \begin{itemize}
+        \item \small Faible nombre de paramètres
+        \item \small Faible volume de données
+        \item \small Le moins d'opérations possible
+        \end{itemize}
+      \end{block}
+      \vfill
+    \end{column}
+    \begin{column}{0.33\linewidth}
+      \begin{block}{Modèles explicables}
+        \begin{itemize}
+        \item \small Maîtrise ds procédés
+        \item \small Maîtrise des données
+        \item \small Reproductibilité
+        \item \small Interprétabilité
+        \end{itemize}
+      \end{block}      
+    \end{column}
+  \end{columns}
+    
+\end{frame}
+
+\subsection{Méthodes ``hybrides''}
+\begin{frame}{\secname~- \subsecname}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Méthodes frugales}
+        \begin{itemize}
+        \item \small Légers
+        \item \small Explicables
+        \item \small Nécessitent peu de données
+        \item \small Mais au champs d'application restreint
+        \end{itemize}
+      \end{block}      
+    \end{column}
+    
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Modèles profonds}
+        \begin{itemize}
+        \item \small Génériques
+        \item \small Photoréalistes
+        \item \small À entraîner qu'une seule fois
+        \item \small Mais peu explicables, souvent lourds, ...
+        \end{itemize}
+      \end{block}      
+    \end{column}
+  \end{columns}
+
+  \vfill
+  \begin{exampleblock}{\centering Des méthodes hybrides pour la génération d'images}
+    \centering
+    \alert{Idée}~: Combiner méthodes frugales et modèles profonds pour
+    conserver les propriétés pertinentes de chacun
+  \end{exampleblock}
+\end{frame}
+
+\subsection{Publications}
+\begin{frame}{\secname~- \subsecname}
+  \alert{TODO: Publications ICI}
+\end{frame}
+
+
+% ============================================
+% ============================================
+\section{Concepts préliminaires}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
+\end{frame}
+
+\subsection{Méthodes à patchs}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Principe}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Propriété}
+\end{frame}
+
+\subsection{Auto-encodeurs}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Principe}
+\end{frame}
+
+% ============================================
+% ============================================
+\section{Transfert de style par contrainte de patchs}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
+\end{frame}
+
+\subsection{Principe}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Définition du transfert de style}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Modélisation du ``style artistique''}
+\end{frame}
+
+\subsection{Motivation}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Pourquoi le transfert de style ?}
+\end{frame}
+
+\subsection{Méthode}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Patchs plus proches voisins}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Multi-échelle}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Pénalisation d'occurrence}
+\end{frame}
+
+\subsection{Résultats}
+\begin{frame}{\secname~- \subsecname}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaisons}
+\end{frame}
+
+
+
+% ============================================
+% ============================================
+\section{Patchs latents pour la génération}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
+\end{frame}
+
+\subsection{Contexte}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Génération de visages}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Génération \emph{``few-shot''}}
+\end{frame}
+
+\subsection{\emph{VQGAN}}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{[Esser et al., 2021]}
+\end{frame}
+
+\subsection{Méthode}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Distance de patchs latents}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Génération séquentielle auto-régressive}
+\end{frame}
+
+\subsection{Expériences}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Résultats}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Pertinence de l'auto-encodeur}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Explicable par design}
+\end{frame}
+
+\subsection{Évaluation}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison qualitative}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Coût computationnel}
+\end{frame}
+
+\subsection{Perspectives}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Génération de texture}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Application aux paysages}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Limites à la généralisation aux grands volumes de données}
+\end{frame}
+
+% ============================================
+% ============================================
+\section{Modèle de mixture gaussiens latents}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
+\end{frame}
+
+\subsection{Méthode}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Modèle latent de mixture de gaussiennes}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Échantillonnage à faible rang}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Raffinement par recherche de patchs plus proches voisins}
+\end{frame}
+
+\subsection{Résultats}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaisons}
+\end{frame}
+% ============================================
+% ============================================
 \section{Conclusion}
-\begin{frame}{Outline}
-  \tableofcontents[currentsection,hideothersubsections]
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
 \end{frame}
-\stepcounter{subsection}
 
-\begin{frame}{Conclusion}
-  %to insert a block without title
-  \begin{shaded}
-    \LARGE A block without title
-  \end{shaded}  
+\subsection{Résumé}
+\begin{frame}{\secname~- \subsecname}
+\end{frame}
 
+\subsection{Perspectives}
+\begin{frame}{\secname~- \subsecname}
 \end{frame}
 
 % the final page
 \makethanks
+
+\section{Suppléments}
 
 \end{document}

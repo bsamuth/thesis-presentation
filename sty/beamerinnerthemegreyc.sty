@@ -68,13 +68,10 @@
 
 % the ''Thank you'' page
 \def\makethanks{%
-  \begin{frame}{The end} 
+  \begin{frame}{} 
   \begin{center}
     %\includegraphics[height=4cm]{thanks.png}\\
-    \begin{Huge}[thank you]\end{Huge}\\
-    \vspace{1cm}
-    Any Questions ?\\
-    \vspace{2cm}
+    \begin{Huge}Merci de votre attention\end{Huge}\\
     \usebeamerfont{email}\texttt{\insertemail}\\
     \usebeamerfont{web}\texttt{\insertweb}
   \end{center}
@@ -142,3 +139,13 @@
 
 
 \mode<all>
+
+
+%% custom
+\def\makesectitle{%
+  \begin{frame}{} 
+    \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+      \Large \secname
+    \end{beamercolorbox}    
+  \end{frame}
+}
