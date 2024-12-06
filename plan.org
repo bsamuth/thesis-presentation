@@ -1,0 +1,48 @@
+* Titre
+- Remercier le Président
+- Remercier le Jury
+- Citer le titre de la thèse
+
+* Introduction
+** Mise en contexte
+*** Génération d'images ?
+> La génération d'images est un domaine vaste qui n'a cessé de s'améliorer.
+- Dresser le cadre
+  - Catalogue d'applications (dont transfert de style, gén. textures, text-to-image)
+  - Réseaux de neurones = Nouveau paradigme [Gatys]
+  - Gain d'intérêt au-delà de la sphère scientifique avec StyleGAN []
+  - État de l'art: Modèles à diffusion + CLIP
+*** Le prix de la performance
+> Cette amélioration due à l'apprentissage profond se traduit par une
+  augmentation de la taille en paramètres des modèles et du volume de
+  données d'entraînement.
+- Insister sur la taille croissante des réseaux
+  - Ordre de grandeur des paramètres
+  - Volume des données d'entraînements
+*** Enjeux
+> Ce fait a différents impacts qui révèlent, à l'instant même, des
+  enjeux majeurs autour de l'IA.
+- Enjeux scientifiques
+  - Contraintes matérielles
+  - Reproductibilité des expériences
+- Enjeux éthiques
+  - Sécurité des données [Carlini] [Webster]
+  - Violation des droits d'auteurs
+- Enjeux de société
+  - Désinformation voire Propagande de guerre
+- Enjeux environementaux
+  - Coût colossal en énergie (fermes de GPUs, durée d'entraînement)
+*** Critères
+> La légereté et l'explicabilité des modèles s'imposent comme des
+  critères répondants à ces différents enjeux.
+> Sans oublier l'intérêt principal : générer des images de bonnes qualité !
+**** Critères - Légereté
+> Définition
+- État de l'art
+**** Critères - Explicabilité
+> Définition
+- Exemple (explications contrefactuelles [Jeanneret])
+*** Méthodes hybrides (Motivation)
+> Les réseaux profonds et les méthodes frugales ont des avantages et inconvénients complémentaires.
+> Thèse : Il est possible de combiner les deux pour garder chacun de leur avantage
+- Piste peu explorée à notre connaissance
