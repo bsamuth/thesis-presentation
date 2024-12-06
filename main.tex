@@ -7,10 +7,14 @@
 %Choose your language
 \def\lang{french} %set it to english or french to have the logo in the good language
 
-\graphicspath{{./img/},{./figs/}}
 \usepackage{amsmath,amsfonts,amssymb,latexsym}
 \usepackage{mathtools,bbm}
 \usepackage[justification=centering]{caption}
+\usepackage{subcaption}
+
+\graphicspath{{./img/},{./figs/}}
+
+\captionsetup[figure]{labelformat=empty,justification=centering}
 
 \DeclareMathOperator*{\argmin}{argmin}
 \def\x{{\mathbf x}}
@@ -20,7 +24,7 @@
 
 
 
-\title[Modèles hybrides pour la génération d'images]{Des modèles hybrides combinant représentations neuronales profondes et méthodes non-paramétriques à patchs pour la génération d'images photoréalistes}
+\title[Modèles hybrides pour la génération d'images]{Des modèles hybrides combinant réseaux de neurones et méthodes à patchs pour la génération d'images}
 \subtitle{}
 \author[Benjamin Samuth]{Benjamin Samuth}
 \institute[Normandie University]{Normandie Univ, UNICAEN, ENSICAEN, CNRS, GREYC, Caen, FRANCE}
@@ -36,11 +40,6 @@
 % ============================================
 % ============================================
 \section{Introduction}
-\begin{frame}
-  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries \secname
-  \end{beamercolorbox}
-\end{frame}
 
 \subsection{Contexte}
 \begin{frame}{\secname~- \subsecname}
@@ -48,141 +47,241 @@
   \begin{columns}
     \begin{column}{0.5\linewidth}      
       \begin{itemize}
-      \item Créer de \alert{nouvelles} images
-      \item Mais fidèles aux données de références
-      \item Avec ou sans d'autres images d'entrée(s)
-      \item Peuvent être conditionnées par un utilisateur
+      \item Vaste ensemble d'applications
+      \item Principalement à usage artistique
+      \item Apprentissage profond $\Rightarrow$ \alert{Nouveau paradigme}
       \end{itemize}
     \end{column}
     \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \begin{subfigure}{0.4\linewidth}
+          \caption{Synthèse de texture [Raad et al., 2014]}
+        \end{subfigure}
+        \begin{subfigure}{0.4\linewidth}
+          \caption{\emph{Inpainting} [Barnes et al., 2009]}
+        \end{subfigure}
+        
+        \begin{subfigure}{0.4\linewidth}
+          \caption{Transfert de style [Gatys et al., 2014]}
+        \end{subfigure}
+        \begin{subfigure}{0.4\linewidth}
+          \caption{Génération de visages (\emph{StyleGAN}) [Karras et al., 2019]}
+        \end{subfigure}
+        
+        \begin{subfigure}{0.4\linewidth}
+          \caption{\emph{Text-to-image} (Modèle de diffusion latente) [Rombach et al., 2022]}
+        \end{subfigure}
+      \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{La rapide évolution du domaine}
+  \framesubtitle{Le prix de la performance}
   \begin{figure}
-    \centering
-    \includegraphics[width=0.8\linewidth]{1.png}
-    \caption{L'évolution du domaine de la génération d'images. La
-      \alert{qualité}, mais aussi les \alert{possibilités sémantiques} ont nettement
-      augmenté grâce aux techniques d'apprentissage profond. \alert{TODO: Sources}}
+    \begin{subfigure}{0.24\linewidth}
+      \caption{\emph{Neural style transfer} [Gatys et al., 2014]}
+    \end{subfigure}
+    \begin{subfigure}{0.24\linewidth}
+      \caption{\emph{StyleGAN} [Karras et al., 2019]}
+    \end{subfigure}
+    \begin{subfigure}{0.24\linewidth}
+      \caption{\emph{Taming transformers} [Esser et al., 2021]}
+    \end{subfigure}
+    \begin{subfigure}{0.24\linewidth}
+      \caption{\emph{Stable Diffusion} [Rombach et al., 2022]}
+    \end{subfigure}
   \end{figure}
+  \begin{exampleblock}{}
+    \centering
+    + de qualité, + de possibilités $\Rightarrow$ \textbf{+ de \alert{paramètres}, + de \alert{données}}
+  \end{exampleblock}
 \end{frame}
 
 
-\subsection{Enjeux et motivations}
+\subsection{Enjeux}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Enjeux}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      Les modèles de générations de l'état de l'art sont dans la plupart des cas~:
-      \begin{itemize}
-      \item complexes,
-      \item souvent inconsistents,
-      \item volumineux en paramètres (contrainte matérielle),
-      \item gourmands en données,
-      \item longs et coûteux à entraîner.
-      \end{itemize}
+      \pause
+      \begin{customblock}{Enjeux scientifiques}
+        \begin{itemize}
+        \item Contraintes matérielles
+        \item Reproductibilité
+        \end{itemize}
+      \end{customblock}
+      \pause
+      \begin{block}{Enjeux éthiques}
+        \begin{itemize}
+        \item Sécurité des données
+        \item Violation des droits d'auteurs
+        \end{itemize}
+      \end{block}
     \end{column}
     \begin{column}{0.5\linewidth}
-      \begin{alertblock}{Des conséquences alarmantes}
-      \begin{itemize}
-      \item Désinformation (\emph{Deep Fakes})
-      \item Propagande
-      \item Violation de droit d'auteurs
-      \item Sans sécurisation des données
-      \item Coût écologique (énergie)
-      \end{itemize}        
+      \pause
+      \begin{alertblock}{Enjeux de société}
+        \begin{itemize}
+        \item Désinformation
+        \item Propagande de guerre
+        \end{itemize}
       \end{alertblock}
+      \pause
+      \begin{exampleblock}{Enjeux environementaux}
+        \begin{itemize}
+        \item Coût colossal en énergie (fermes de GPUs, entraînement + utilisation)
+        \end{itemize}
+      \end{exampleblock}
     \end{column}
   \end{columns}
+\end{frame}
 
-  \vfill
-  \begin{exampleblock}{}
-    \centering
-  À l'heure actuelle, les modèles de génération posent des
-  \alert{problèmes} à la fois \alert{éthique} et \alert{de société}.
+\subsection{Critères}
+\begin{frame}{\secname~- \subsecname}
+  \begin{exampleblock}{\centering Quels critères pour faire face à ces enjeux ?}
+    \begin{itemize}
+      \pause
+    \item Des modèles \alert{légers}
+      \pause
+    \item Des modèles \alert{explicables}
+    \end{itemize}
+    \pause
+    ... mais tout de même les plus performants possibles~!
   \end{exampleblock}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Challenges}
-  \begin{center}
-    \textbf{Quels critères pour faire face à ces enjeux ?}
-  \end{center}
   \begin{columns}
-    \begin{column}{0.33\linewidth}
-      \begin{block}{Modèles photoréalistes}
+    \begin{column}{0.5\linewidth}
+      \begin{customblock}{Modèles légers / frugaux}        
         \begin{itemize}
-        \item \small Qualité d'images
-        \item \small Fidélité aux données
-        \item \small Génération variée
+        \item \small Le - de paramètres
+        \item \small Le - de données
+        \item \small Le - d'opérations possible
+        \end{itemize}
+      \end{customblock}
+      \begin{alertblock}{Inconvénients}
+        \begin{itemize}
+        \item \small Champs d'action limité (ex: 1 seule image)
+        \end{itemize}
+      \end{alertblock}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \begin{subfigure}{0.45\linewidth}
+          \caption{Génération \emph{few-shot} (FastGAN) [Liu et al., 2020]}
+        \end{subfigure}
+        \begin{subfigure}{0.45\linewidth}
+          \caption{\emph{Transfert de style à branches} [Durand et al., 2022]}
+        \end{subfigure}
+        \begin{subfigure}{0.45\linewidth}
+          \caption{\emph{GPNN} (\emph{``Drop the GAN''}) [Granot et al., 2022]}
+        \end{subfigure}
+      \end{figure}
+    \end{column}
+  \end{columns}  
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{block}{Modèles explicables}        
+        \begin{itemize}
+        \item \small Sujet émergent
+        \item \small Comprendre comment et pourquoi 
+        \item \small Connaître les capacités et limites
+        \item \small Offrir des garanties (biais, sécurité des données, ...)
         \end{itemize}
       \end{block}
-      \vfill
-    \end{column}
-    \begin{column}{0.33\linewidth}
-      \begin{block}{Modèles légers}        
+      \begin{alertblock}{Inconvénients}
         \begin{itemize}
-        \item \small Faible nombre de paramètres
-        \item \small Faible volume de données
-        \item \small Le moins d'opérations possible
+        \item \small Difficile à appliquer
+        \item \small Souvent empirique
         \end{itemize}
-      \end{block}
-      \vfill
+      \end{alertblock}
     \end{column}
-    \begin{column}{0.33\linewidth}
-      \begin{block}{Modèles explicables}
-        \begin{itemize}
-        \item \small Maîtrise ds procédés
-        \item \small Maîtrise des données
-        \item \small Reproductibilité
-        \item \small Interprétabilité
-        \end{itemize}
-      \end{block}      
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \begin{subfigure}{0.45\linewidth}
+          \caption{Explications contrefactuelles [Jeanneret]}
+        \end{subfigure}
+      \end{figure}
     \end{column}
-  \end{columns}
-    
+  \end{columns}    
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \begin{customblock}{\centering Problématique}
+    \centering
+    Peut-on concilier la qualité de génération (photoréalisme) avec
+    les critères de légereté et d'explicabilité des modèles ?
+  \end{customblock}
 \end{frame}
 
 \subsection{Méthodes ``hybrides''}
 \begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Motivation} 
   \begin{columns}
-    \begin{column}{0.5\linewidth}
-      \begin{block}{Méthodes frugales}
-        \begin{itemize}
-        \item \small Légers
-        \item \small Explicables
-        \item \small Nécessitent peu de données
-        \item \small Mais au champs d'application restreint
-        \end{itemize}
-      \end{block}      
-    \end{column}
-    
+    \pause
     \begin{column}{0.5\linewidth}
       \begin{block}{Modèles profonds}
         \begin{itemize}
-        \item \small Génériques
         \item \small Photoréalistes
-        \item \small À entraîner qu'une seule fois
-        \item \small Mais peu explicables, souvent lourds, ...
+        \item \small Génération variée
+        \item \small Mais peu explicables et lourds
         \end{itemize}
       \end{block}      
     \end{column}
+
+    \pause
+    \begin{column}{0.5\linewidth}
+      \begin{customblock}{Méthodes frugales}
+        \begin{itemize}
+        \item \small Légeres (certaines explicables)
+        \item \small Nécessitent peu de données
+        \item \small Mais au champs d'application restreint
+        \end{itemize}
+      \end{customblock}      
+    \end{column}    
   \end{columns}
 
   \vfill
+  \pause
   \begin{exampleblock}{\centering Des méthodes hybrides pour la génération d'images}
     \centering
     \alert{Idée}~: Combiner méthodes frugales et modèles profonds pour
     conserver les propriétés pertinentes de chacun
   \end{exampleblock}
+  \begin{itemize}
+    \centering
+    \item Une piste encore peu explorée...!
+  \end{itemize}
 \end{frame}
 
-\subsection{Publications}
+\subsection{Méthodes ``hybrides''}
 \begin{frame}{\secname~- \subsecname}
-  \alert{TODO: Publications ICI}
+  \framesubtitle{Motivation}
+  \begin{columns}
+    \begin{column}{0.33\linewidth}
+      \begin{itemize}
+        \centering
+        \item 1. Exposer \alert{qualitativement} leur pertinence dans le transfert de style
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.33\linewidth}
+      \begin{itemize}
+        \centering
+      \item 2. Démontrer leurs \alert{économies en calculs} dans la génération \emph{few-shot} de visages
+      \end{itemize}      
+    \end{column}
+    \begin{column}{0.33\linewidth}
+      \begin{itemize}
+        \centering
+      \item 3. Proposer une voie pour les \alert{généraliser} sur plus de données variées
+      \end{itemize}      
+    \end{column}
+  \end{columns}
 \end{frame}
 
 
@@ -203,7 +302,6 @@
       \begin{figure}
         \centering
         \includegraphics[width=\linewidth]{2.png}
-        \caption{Un patch.}
       \end{figure}
     \end{column}
     
@@ -246,31 +344,48 @@
 \begin{frame}{\secname~- \subsecname} 
   \framesubtitle{Principe}
   \begin{columns}
-    \begin{column}{0.7\linewidth}
+    \begin{column}{0.6\linewidth}
       Soient $x, y \in \mathbb{R}^{W \times H \times C}$,
       \begin{block}{Recherche du plus proche voisin}
         \centering
         $j^* = \underset{j \in \Omega}{\argmin}\ ||MP(x,i) - MP(y,j)||_2^2$
       \end{block}
-      {\small avec $M$ un mask appliqué au patch sur les pixels d'intérêts.}
-
-      \vfill
-      \begin{itemize}
-      \item $P(y,j^*)$ est le \alert{patch plus proche voisin} de $P(x,i)$        
-      \end{itemize}
-      \begin{exampleblock}{}
+      {\small avec $M$ un masque appliqué au patch sur les pixels d'intérêts.}
+      
+      \pause
+      \begin{exampleblock}{Carte de plus proches voisins}
         \centering
-        \small
-        Puisqu'à chaque $i$ correspond un $j^*$, on peut dans le
-        cadre d'une génération d'image \alert{expliquer} et \alert{reproduire}
-        le procédé vis-à-vis des patchs de $x$.
+        L'assignement d'un $j^*$ pour chaque $i$ forme une carte qui \alert{explique} le résultat.
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.3\linewidth}
+    \begin{column}{0.4\linewidth}
       \begin{figure}
         \centering
-        \includegraphics[height=0.6\textheight]{3.png}
-        \caption{Example d'algorithme de génération par patchs. \alert{TODO: Source}}
+        \includegraphics[height=0.6\textheight]{nnf.png}
+        \caption{(a) Image $x$ (b) Identité \\ (d) Image $y$ (c) Carte d'assignement}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\subsection{Encodeurs}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Principe}
+  \begin{columns}
+    \begin{column}{0.4\linewidth}
+      \begin{block}{Encodeurs}
+        \begin{itemize}
+        \item D'abord utilisés pour la classification (prédiction de labels)
+        \item Premières couches transforment une image RGB en \alert{\emph{features}}
+        \item Autrement utilisés à des fins intermédiaires (compression, métrique, ...)
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.6\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[height=0.6\textheight]{vgg16.png}
+        \caption{\emph{VGG-16} [Simonyan, 2014]}
       \end{figure}
     \end{column}
   \end{columns}
@@ -278,32 +393,24 @@
 
 \subsection{Auto-encodeurs}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Principe}
-  \begin{columns}
-    \begin{column}{0.45\linewidth}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.7\linewidth]{4.png}
+    \caption{Schéma classique d'un auto-encodeur}
+    \begin{block}{Reconstruction}
+      \centering
+      \begin{itemize}
+      \item Optimisation d'un objectif de reconstruction
+      \end{itemize}
+      $\underset{E,D}{\min}\ \underset{x \sim p(x)}{\mathbb{E}}\left[\mathcal{L}_{\text{rec}}(x,D(E(x)))\right]$
+      \begin{itemize}        
+      \item Représentation \alert{latente}
+      \item Explicabilité partielle (réseau profond)
+      \end{itemize}
 
-      \begin{figure}
-        \centering
-        \includegraphics[width=\linewidth]{4.png}
-        \caption{Example d'auto-encodeur. Ici, un auto-encodeur variationnel. \alert{TODO: Sources}}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.55\linewidth}
-      \begin{block}{Auto-encodeurs}
-        \begin{itemize}
-        \item $E$, encodeur
-        \item $D$, décodeur
-        \item Représentation \alert{latente}
-        \item Procédé d'optimisation d'une \emph{loss} de reconstruction $\mathcal{L}_{\text{rec}}$
-        \end{itemize}
-      \end{block}
-
-      \begin{block}{Objectif de reconstruction}
-        \centering
-        $\underset{E,D}{\min}\ \underset{x \sim p(x)}{\mathbb{E}}\left[\mathcal{L}_{\text{rec}}(x,D(E(x)))\right]$
-      \end{block}
-    \end{column}
-  \end{columns}
+    \end{block}
+  \end{figure}
+  
 \end{frame}
 
 % ============================================
@@ -311,44 +418,61 @@
 \section{Transfert de style par contrainte de patchs}
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries \secname
+    \LARGE\bfseries Contribution 1.\\ \secname
   \end{beamercolorbox}
 \end{frame}
 
-\subsection{Principe}
+\subsection{Contexte}
 \begin{frame}{\secname~- \subsecname}
-  \begin{itemize}
-  \item Images ``naturelles'', images ``artistiques'' 
-  \item Style : ensemble de \alert{caractéristiques esthétiques} propres à une image
-  \item Transfert de style : poser le style artistique d'une de
-    référence image $R$ sur une image de contenu $I$, donnant une synthèse
-    $J$.
-    \vspace{1em}
-  \item Le style est \alert{difficile à définir mathématiquement}
-  \item Hypothèse : Le style est contenu dans les patchs d'une image
-  \end{itemize}
+  \begin{columns}
+    \begin{column}{0.6\linewidth}
+      \begin{customblock}{Principe du transfert de style}
+        \begin{itemize}
+        \item \small Style : ensemble de \alert{caractéristiques esthétiques} propres à une image
+        \item \small Transfert de style : poser le style artistique d'une
+          image de \alert{référence} $R$ sur une image de \alert{contenu} $I$ (\emph{Input})
+        \end{itemize}    
+      \end{customblock}
+      \begin{block}{\emph{Neural style transfer} [L. Gatys, 2016]}
+        \begin{itemize}
+        \item \small Optimise sur les \emph{features} \emph{VGG-16} [K. Simonyan, 2014]
+        \item \small Procédé \alert{long} (5-15 min. sur GPU)
+        \item \small À répéter pour chaque différent style/contenu
+        \end{itemize}
+      \end{block}
+    \end{column}
+    \begin{column}{0.4\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{balloon/gatys.png}
+        \caption{Méthode de [L. Gatys, 2016]}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
 
 \subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
-    \begin{column}{0.3\linewidth}
+    \begin{column}{0.5\linewidth}
       \begin{itemize}
-      \item Injection de détails par le masque $M_k$
-      \item Plus proche voisins (\emph{PatchMatch})
-      \item Multi-échelle
-      \item Contrainte d'occurrences
-      \item Différents espaces (couleurs, \emph{features VGG-16})
+      \item Plus proche voisins approximé (\emph{PatchMatch} [C.~Barnes, 2009])
+      \item Multi-échelle*
+      \item Injection de détails
       \end{itemize}
     \end{column}
-    \begin{column}{0.7\linewidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=\linewidth]{5.pdf}
-        \caption{Schéma du transfert de style à une échelle $k$.}
-      \end{figure}
+    \begin{column}{0.5\linewidth}
+      \begin{itemize}
+      \item Contrainte d'occurrences*
+      \item Différents espaces (couleurs, \emph{features VGG-16})*
+      \end{itemize}
     \end{column}
   \end{columns}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.9\linewidth]{5.pdf}
+    \caption{Schéma du transfert de style à une échelle $k$.}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
@@ -356,10 +480,14 @@
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{itemize}
-      \item $W_k$ est la carte des correspondances des patchs de $J_k$ vers ceux de $R_k$.
-      \item Pour passer à l'échelle $W_k\!\uparrow$, il faut agrandir la carte d'un ratio $r > 1$
-      \item Cela nécessite un passage à l'échelle particulier
+      \item $W_k$~: carte des patchs plus proches voisins de $J_k$ dans $R_k$.
+      \item $W_k$ contient des \alert{coordonnées}
+      \item Passage d'échelle d'un ratio $r > 1$
       \end{itemize}
+      \begin{figure}
+        \includegraphics[width=0.8\linewidth]{5_me.png}
+      \end{figure}
+
     \end{column}
     \begin{column}{0.5\linewidth}
       \begin{block}{Passage à l'échelle}
@@ -370,7 +498,7 @@
       \begin{exampleblock}{Avantages}
         \begin{itemize}
         \item Opération immédiate
-        \item Pas de perte de qualité (flou)
+        \item Pas de perte de qualité
         \end{itemize}
       \end{exampleblock}
     \end{column}
@@ -381,14 +509,36 @@
   \framesubtitle{Pénalisation d'occurrence}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Distance pénalisée}
+        \begin{itemize}
+        \item Recherche de + proches voisins \emph{``trop''} efficaces
+        \item Équilibrer l'utilisation des patchs de style
+        \end{itemize}
+
+      \begin{block}{Distance de patchs pénalisée}
         \centering
         \small
         $W_k^* \in \argmin_{W \in F}\ \sum_{p \in \Omega} \frac{D_k(p)}{Var(D_k)} - \lambda_W \circ W(p)$
         
         $\text{avec} \quad D_k(p) = ||\tilde{J}_k(p) - R_k \circ W(p)||^2$
       \end{block}
-      \vspace{1em}
+      \begin{itemize}
+      \item $\lambda_W \circ W(p) < 0$~: Patch en $p$ pénalisé
+      \item $\lambda_W \circ W(p) > 0$~: Patch en $p$ favorisé
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{6.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Pénalisation d'occurrence}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}      
       \begin{block}{Actualisation de la pénalisation}
         \small
         \begin{center}
@@ -400,7 +550,10 @@
         \end{center}
         
         \begin{itemize}
-        \item Appliquée durant les différentes itérations de la recherche de plus proches voisins
+        \item Méthode pour le transport optimal
+        \item Montée de gradient
+        \item Durant les différentes itérations de \emph{PatchMatch} [C.~Barnes, 2009]
+        \item Converge vers un point fixe
         \end{itemize}
       \end{block}    
     \end{column}
@@ -416,6 +569,63 @@
 
 \subsection{Résultats}
 \begin{frame}{\secname~- \subsecname}
+  \begin{figure}
+    \begin{subfigure}{0.47\linewidth}
+      \includegraphics[width=\linewidth]{balloon/ours.png}
+      \caption{Notre méthode ($\Phi$ : RGB \& Gradients)}
+    \end{subfigure}
+    \begin{subfigure}{0.45\linewidth}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{balloon/balloon_s.png}
+        \caption{Contenu}
+      \end{subfigure}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{balloon/starry_night_s.jpg}
+        \caption{Style}
+      \end{subfigure}
+
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{balloon/gatys.png}
+        \caption{[C. Gatys, 2014]}
+      \end{subfigure}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{balloon/liu.png}
+        \caption{[S. Liu, 2021]}
+      \end{subfigure}
+    \end{subfigure}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \begin{figure}
+    \begin{subfigure}{0.47\linewidth}
+      \includegraphics[width=\linewidth]{tuebingen/ours.png}
+      \caption{Notre méthode ($\Phi$ : \emph{VGG-16}, relu\_1\_1)}
+    \end{subfigure}
+    \begin{subfigure}{0.45\linewidth}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{tuebingen/tuebingen_s.jpg}
+        \caption{Contenu}
+      \end{subfigure}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{tuebingen/abstract_s}
+        \caption{Style}
+      \end{subfigure}
+
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{tuebingen/gatys.png}
+        \caption{[C. Gatys, 2014]}
+      \end{subfigure}
+      \begin{subfigure}{0.45\linewidth}
+        \includegraphics[width=\linewidth]{tuebingen/liu.png}
+        \caption{[S. Liu, 2021]}
+      \end{subfigure}
+    \end{subfigure}
+  \end{figure}
+\end{frame}
+
+
+\begin{frame}{\secname~- \subsecname}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{figure}
@@ -424,9 +634,10 @@
       \end{figure}
     \end{column}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Pertinence des modèles hybrides}
+      \begin{block}{Pertinence des métriques}
         \begin{itemize}
         \item \emph{``Patch-features''} $\Phi$
+        \item Mise en évidence : stylisation d'une image stylisée
         \item Caractéristiques stylistiques capturées différentes selon $\Phi$
         \end{itemize}
       \end{block}
@@ -434,66 +645,72 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaisons}
-  \begin{columns}
-    \begin{column}{0.5\linewidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.6\linewidth]{8.png}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.5\linewidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=0.6\linewidth]{9.png}
-      \end{figure}
-    \end{column}
-  \end{columns}
-\end{frame}
-
-
 
 % ============================================
 % ============================================
 \section{Patchs latents pour la génération}
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries \secname
+    \LARGE\bfseries Contribution 2.\\ \secname
   \end{beamercolorbox}
 \end{frame}
 
 \subsection{Contexte}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Génération de visages}
-  \begin{itemize}
-  \item Visages : cas souvent étudié dans la génération
-  \item Facile à évaluer qualitativement
-  \item Peuvent être recalés
-  \item Base de données de bonne qualité disponibles
-  \item \emph{CelebA-HQ} : annotations par caractéristiques (genre, couleur de cheveux, lunettes, ...)
-  \end{itemize}
-\end{frame}
-
-\begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération \emph{``few-shot''}}
   \begin{itemize}
   \item Génération avec peu de données
-  \item Ordre de grandeur : Entre 10 et 1000 (voire 10000) échantillons
-  \item Problème difficile : instabilité ou mémorisation à l'apprentissage
-
-    \vspace{1em}
-  \item Plusieurs techniques : nouvelles architectures, augmentation de données, transfert de connaissances, ...
+  \item Entre 10 et 1000 échantillons
+  \item Problème difficile : instabilité ou mémorisation
   \end{itemize}
+  \begin{customblock}{}
+    \centering
+    Certaines méthodes de l'état de l'art (\emph{transformers},
+    diffusion) sont \alert{inapplicables} telles quelles dans ces
+    configurations !
+  \end{customblock}
+  \pause
+  \begin{itemize}
+  \item Solutions : Architectures, augmentation de données, transfert de connaissances, ...
+  \item \alert{Inconvénient} : phase d'apprentissage longue malgré le peu de données ($\sim$2h)
+  \end{itemize}
+
+  
 \end{frame}
 
 \subsection{\emph{VQGAN}}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{[Esser et al., 2021]}
-  \begin{figure}
-    \includegraphics[width=\linewidth]{10.png}
-  \end{figure}
+  \begin{columns}
+    \begin{column}{0.2\linewidth}
+      \begin{itemize}
+      \item \small Auto-encodeur
+      \item \small Adversariel
+      \item \small Quantifié
+      \item \small Spatial
+        \vspace{1em}
+      \item \small Génération par un \emph{Transformer}
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.8\linewidth}
+      \begin{figure}
+        \includegraphics[width=\linewidth]{10.png}
+      \end{figure}
+    \end{column}
+  \end{columns}
 \end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Propriété}
+  \begin{figure}
+    \includegraphics[width=\linewidth]{16.png}
+  \end{figure}
+  \begin{itemize}
+  \item \alert{Estompe les bords} de manière photoréaliste
+  \item \alert{Harmonise} les couleurs/textures du visage.
+\end{itemize}
+\end{frame}
+
 
 \subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
@@ -501,10 +718,10 @@
     \includegraphics[width=\linewidth]{11.pdf}
   \end{figure}
   \begin{itemize}
-  \item Représentation latente via VQGAN pré-entraîné sur une grande base de données (FFHQ)
-  \item Réduction de dimension via $R$
-  \item Génération à partir d'une base limitée de visage (CelebA-HQ), pré-encodée dans $E$
-  \item Synthèse d'images latentes, ensuite décodée par $D$
+  \item $E, D$ : VQGAN pré-entraîné sur FFHQ
+  \item $\mathcal{X}$ : \emph{Dataset} limité
+  \item $R$ : Réduction de dim. par ACP
+  \item $G$ : Génération d'une représentation latente par patchs
   \end{itemize}
 \end{frame}
 
@@ -537,38 +754,30 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Pertinence de l'auto-encodeur}
   \begin{columns}
-    \begin{column}{0.4\linewidth}
+    \begin{column}{0.7\linewidth}
       \begin{figure}
-        \includegraphics[width=\linewidth]{15.png}
-        \caption{L'auto-encodeur n'est pas un générateur à lui seul.}
+        \includegraphics[width=0.8\linewidth]{15.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.6\linewidth}
-      \begin{figure}
-        \includegraphics[width=\linewidth]{16.png}
-        \caption{Un auto-encodeur spécialisé réalise une fusion photoréaliste des visages au décodage.}
-      \end{figure}
+    \begin{column}{0.3\linewidth}
+      \begin{itemize}
+      \item L'auto-encodeur n'est pas un générateur à lui seul.        
+      \end{itemize}
     \end{column}
   \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Biais de performance de \emph{VQGAN}}
+  \framesubtitle{Biais de performance}
   \begin{columns}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.7\linewidth}
       \begin{figure}
         \includegraphics[width=\linewidth]{19.pdf}
-        \caption{Les histogrammes montrent les erreurs de reconstructions sur
-        6000 échantillons pris dans leur base de données respective (FFHQ et CelebA-HQ).}
       \end{figure}
     \end{column}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.3\linewidth}
       \begin{itemize}
-      \item La reconstruction n'est pas plus performante sur la base d'entraînement
-      \item Donc, les chances de mémorisations de visages sont moindres
-      \item {\small Note: les reconstructions par \emph{VQGAN} des visages de
-        CelebA-HQ sont meilleures car la base contient moins d'images de
-        mauvaise qualité.}
+      \item Il ne favorise pas sa base d'entraînement (pas de mémorisation).
       \end{itemize}
     \end{column}
   \end{columns}
@@ -577,17 +786,15 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Explicable par design}
   \begin{columns}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.4\linewidth}
       \begin{itemize}
-      \item La nature de l'opération de recherche de plus proches voisins permet d'immédiatement expliquer
-        la génération
-      \item Elle garantie \emph{dans une certaine mesure} la relation entre données et génération
+      \item Relation \alert{source} et \alert{génération} immédiate
+      \item Explicabilité partielle (décodeur)
       \end{itemize}
     \end{column}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.6\linewidth}
       \begin{figure}
         \includegraphics[width=\linewidth]{17.png}
-        \caption{Un auto-encodeur spécialisé réalise une fusion photoréaliste des visages au décodage.}
       \end{figure}  
     \end{column}
   \end{columns}  
@@ -597,38 +804,42 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Comparaison qualitative}
   \begin{columns}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.55\linewidth}
       \begin{figure}
         \includegraphics[width=\linewidth]{18.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.45\linewidth}
       \begin{itemize}
       \item Comparaison avec \emph{FastGAN}
       \item Architecture avec apprentissage adversariel pour la génération en \emph{few-shot}
-      \item Notre méthode est plus stable lorsque le nombre d'exemples est très faible
+      \item Notre méthode est + stable lorsque le nombre d'exemples est très faible
       \end{itemize}
     \end{column}
   \end{columns}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaison quantitative}
-    \begin{columns}
-    \begin{column}{0.5\linewidth}
-      \begin{figure}
-        \includegraphics[width=0.8\linewidth]{20.pdf}
-        \includegraphics[width=0.8\linewidth]{21.pdf}
-      \end{figure}
-    \end{column}
-    \begin{column}{0.5\linewidth}
-      \begin{itemize}
-      \item Notre méthode est plus stable en présence de très peu de données
-      \item Perte de qualité (précision) par rapport à \emph{FastGAN}
-      \item Diversité des échantillons (rappel) meilleur
-      \end{itemize}
-    \end{column}
-  \end{columns}  
+  \framesubtitle{Comparaison quantitative - FID}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{fid-vs-subset.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - Precision}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{20.pdf}
+    \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - Rappel}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{21.pdf}
+    \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
+  \end{figure}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
@@ -643,79 +854,89 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Perspectives}
+% ============================================
+% ============================================
+\section{Modèle de mélanges gaussiens latents}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries Contribution 3. \\ \secname
+  \end{beamercolorbox}
+\end{frame}
+
+\subsection{Observation}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Génération de texture}
+  \framesubtitle{Tentative de généralisation}
   \begin{columns}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.6\linewidth}
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{23.png}
+        \includegraphics[width=\linewidth]{latentpatch_full.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.5\linewidth}
-      \begin{itemize}
-      \item Application à la génération (et extension) de textures
-      \item Un auto-encodeur générique est capable de raccorder fidèlement des textures entres elles
-      \end{itemize}
+    \begin{column}{0.4\linewidth}
+      \begin{alertblock}{\emph{LatentPatch} généralisé}
+        \begin{itemize}
+        \item Dans le cas \emph{few-shot} : visages perceptuellement proches
+        \item Sensible aux échantillons qui varient fortement
+        \end{itemize}
+      \end{alertblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Application aux paysages}
-  \begin{columns}
-    \begin{column}{0.5\linewidth}
-      \begin{itemize}
-      \item Application à une autre modalité : les paysages
-      \item \emph{VQGAN} pré-entraîné sur \emph{MS-COCO}
-      \item Les raccords entre patchs sont photoréalistes en termes de
-        textures, mais ne font pas sens sémantiquement.
-      \end{itemize}
-    \end{column}
-    \begin{column}{0.5\linewidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=\linewidth]{24.png}
-      \end{figure}
-    \end{column}
-  \end{columns}  
-\end{frame}
-
-\begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Limites à la généralisation et aux grands volumes de données}
-  \begin{itemize}
-  \item La méthode fonctionne sur des images perceptuellement proches en \emph{few-shot}
-  \item Face à des images trops variées, la méthode peut échouer à faire de raccords de patchs vraisemblables (manque de cohérence spatial)
-  \item La génération avec un grand volume de données à tendance à propager du flou
-  \end{itemize}
-\end{frame}
-
-% ============================================
-% ============================================
-\section{Modèle de mixture gaussiens latents}
-\begin{frame}
-  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries \secname
-  \end{beamercolorbox}
-\end{frame}
-
 \subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Modèle latent de mixture de gaussiennes}
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{lrgmm.pdf}
+  \end{figure}
+  \begin{columns}
+    \begin{column}{0.5\linewidth}
+      \begin{exampleblock}{Principe}
+        \begin{itemize}
+        \item \small Apprendre un \emph{GMM} sur les représentations latentes
+        \item \small Échantillonner le \emph{GMM} à un faible rang comme initialisation
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+    \begin{column}{0.5\linewidth}
+        \begin{exampleblock}{}
+        \begin{itemize}
+        \item \small Projeter parmi les $k$-patchs plus proches voisins
+        \item \small Décoder
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Échantillonnage à faible rang}
+  \framesubtitle{Échantillonnage à faible rang} 
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{ablation_dk.png}
+  \end{figure}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Raffinement par recherche de patchs plus proches voisins}
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{ablation_nn.png}
+  \end{figure}    
 \end{frame}
 
 \subsection{Résultats}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaisons}
+  \framesubtitle{Comparaisons qualitative}
+  \begin{figure}
+    \includegraphics[width=\linewidth]{comp_img}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaisons qualitative}
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{comp_tab}
+  \end{figure}
 \end{frame}
 % ============================================
 % ============================================
@@ -728,10 +949,41 @@
 
 \subsection{Résumé}
 \begin{frame}{\secname~- \subsecname}
+  \begin{customblock}{Qualité, légereté, explicabilité}
+    \begin{itemize}
+    \item La croissance des modèles $\rightarrow$ un problème
+    \item La légereté et l'explicabilité sont souhaitables
+    \item Les modèles hybrides peuvent répondre à ces critères
+    \end{itemize}
+  \end{customblock}
+
+  \pause
+  \begin{exampleblock}{Viabilité des modèles hybrides}
+    \begin{itemize}  
+    \item 1. Les représentations des réseaux sont pertinents avec des modèles frugaux
+    \item 2. Le rapport qualité/temps de calculs peut être à notre avantage
+    \item 3. La généralisation à des échantillons variés est possible
+    \end{itemize}
+  \end{exampleblock}
 \end{frame}
 
-\subsection{Perspectives}
+\subsection{Perspectives et Limites}
 \begin{frame}{\secname~- \subsecname}
+  \begin{alertblock}{Limites}
+    \begin{itemize}
+    \item Dépendant d'un réseau de neurone $\Rightarrow$ Explicabilité partielle
+    \item Les expériences sur images recalées
+    \item Génération unimodale (visages)
+    \end{itemize}
+  \end{alertblock}
+
+  \pause
+  \begin{block}{Perspectives}
+    \begin{itemize}
+    \item S'affranchir de \emph{VQGAN} / l'apprendre soi-même
+    \item S'affranchir des contraintes de recalage
+    \end{itemize}
+  \end{block}
 \end{frame}
 
 % the final page

@@ -52,6 +52,16 @@
 	\renewcommand{\insertweb}{#1}
 }
 
+
+% custom
+\newenvironment{customblock}[1]{%
+  \definecolor{greyc-image}{RGB}{29,162,211}
+  \setbeamercolor*{structure}{fg=greyc-image}
+  \setbeamercolor{block title}{use=structure,fg=white,bg=structure.fg!75!black}
+  \setbeamercolor{block body}{parent=normal text,use=block title,bg=block title.bg!10!bg}
+  \begin{block}{#1}}{\end{block}
+}
+
 \useinnertheme{greyc}
 
 \hypersetup{
