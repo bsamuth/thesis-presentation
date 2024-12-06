@@ -44,51 +44,53 @@
 \subsection{Contexte}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Génération d'images~?}
-  \begin{columns}
-    \begin{column}{0.5\linewidth}      
       \begin{itemize}
       \item Vaste ensemble d'applications
       \item Principalement à usage artistique
       \item Apprentissage profond $\Rightarrow$ \alert{Nouveau paradigme}
       \end{itemize}
-    \end{column}
-    \begin{column}{0.5\linewidth}
+      
       \begin{figure}
-        \begin{subfigure}{0.4\linewidth}
-          \caption{Synthèse de texture [Raad et al., 2014]}
+        \begin{subfigure}{0.17\linewidth}
+          \includegraphics[width=\linewidth]{texture.png}
+          \caption{\footnotesize Synthèse de texture [Ashikhmin et al., 2001]}
         \end{subfigure}
-        \begin{subfigure}{0.4\linewidth}
-          \caption{\emph{Inpainting} [Barnes et al., 2009]}
+        \begin{subfigure}{0.17\linewidth}
+          \includegraphics[width=\linewidth]{patchmatch.png}
+          \caption{\footnotesize \emph{Inpainting/Editing} [Barnes et al., 2009]}
+        \end{subfigure}        
+        \begin{subfigure}{0.17\linewidth}
+          \includegraphics[width=\linewidth]{gatys}
+          \caption{\footnotesize Transfert de style [Gatys et al., 2014]}          
         \end{subfigure}
-        
-        \begin{subfigure}{0.4\linewidth}
-          \caption{Transfert de style [Gatys et al., 2014]}
-        \end{subfigure}
-        \begin{subfigure}{0.4\linewidth}
-          \caption{Génération de visages (\emph{StyleGAN}) [Karras et al., 2019]}
-        \end{subfigure}
-        
-        \begin{subfigure}{0.4\linewidth}
-          \caption{\emph{Text-to-image} (Modèle de diffusion latente) [Rombach et al., 2022]}
+        \begin{subfigure}{0.17\linewidth}
+          \includegraphics[width=\linewidth]{stylegan}
+          \caption{\footnotesize Génération de visages (\emph{StyleGAN}) [Karras et al., 2019]}
+        \end{subfigure}        
+        \begin{subfigure}{0.17\linewidth}
+          \includegraphics[width=\linewidth]{stable-diffusion}
+          \caption{\footnotesize \emph{Text-to-image} (Modèle de diffusion latent) [Rombach et al., 2022]}
         \end{subfigure}
       \end{figure}
-    \end{column}
-  \end{columns}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Le prix de la performance}
   \begin{figure}
     \begin{subfigure}{0.24\linewidth}
+      \includegraphics[width=\linewidth]{gatys}
       \caption{\emph{Neural style transfer} [Gatys et al., 2014]}
     \end{subfigure}
     \begin{subfigure}{0.24\linewidth}
+      \includegraphics[width=\linewidth]{stylegan}                
       \caption{\emph{StyleGAN} [Karras et al., 2019]}
     \end{subfigure}
     \begin{subfigure}{0.24\linewidth}
+      \includegraphics[width=\linewidth]{esser}                      
       \caption{\emph{Taming transformers} [Esser et al., 2021]}
     \end{subfigure}
     \begin{subfigure}{0.24\linewidth}
+      \includegraphics[width=\linewidth]{stable-diffusion}
       \caption{\emph{Stable Diffusion} [Rombach et al., 2022]}
     \end{subfigure}
   \end{figure}
@@ -170,12 +172,19 @@
     \begin{column}{0.5\linewidth}
       \begin{figure}
         \begin{subfigure}{0.45\linewidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{fastgan.png}
           \caption{Génération \emph{few-shot} (FastGAN) [Liu et al., 2020]}
         \end{subfigure}
         \begin{subfigure}{0.45\linewidth}
-          \caption{\emph{Transfert de style à branches} [Durand et al., 2022]}
+          \centering
+          \includegraphics[width=0.8\linewidth]{durand.png}
+          \caption{\emph{Transfert de style modulaire} [Durand et al., 2022]}
         \end{subfigure}
-        \begin{subfigure}{0.45\linewidth}
+        
+        \begin{subfigure}{\linewidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{granot.png}
           \caption{\emph{GPNN} (\emph{``Drop the GAN''}) [Granot et al., 2022]}
         \end{subfigure}
       \end{figure}
@@ -203,8 +212,10 @@
     \end{column}
     \begin{column}{0.5\linewidth}
       \begin{figure}
-        \begin{subfigure}{0.45\linewidth}
-          \caption{Explications contrefactuelles [Jeanneret]}
+        \begin{subfigure}{0.6\linewidth}
+          \centering
+          \includegraphics[width=0.8\linewidth]{jeanneret}
+          \caption{Explications contrefactuelles [Jeanneret et al., 2023]}
         \end{subfigure}
       \end{figure}
     \end{column}
@@ -263,22 +274,22 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Motivation}
   \begin{columns}
-    \begin{column}{0.33\linewidth}
+    \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-        \item 1. Exposer \alert{qualitativement} leur pertinence dans le transfert de style
+        \item \small 1. Exposer \alert{qualitativement} leur pertinence dans le transfert de style
       \end{itemize}
     \end{column}
-    \begin{column}{0.33\linewidth}
+    \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-      \item 2. Démontrer leurs \alert{économies en calculs} dans la génération \emph{few-shot} de visages
+      \item \small 2. Démontrer leurs \alert{économies en calculs} dans la génération \emph{few-shot} de visages
       \end{itemize}      
     \end{column}
-    \begin{column}{0.33\linewidth}
+    \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-      \item 3. Proposer une voie pour les \alert{généraliser} sur plus de données variées
+      \item \small 3. Proposer une voie pour les \alert{généraliser} sur plus de données variées
       \end{itemize}      
     \end{column}
   \end{columns}
@@ -385,7 +396,7 @@
       \begin{figure}
         \centering
         \includegraphics[height=0.6\textheight]{vgg16.png}
-        \caption{\emph{VGG-16} [Simonyan, 2014]}
+        \caption{\emph{VGG-16} [Simonyan et al., 2014]}
       \end{figure}
     \end{column}
   \end{columns}
