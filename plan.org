@@ -2,47 +2,44 @@
 - Remercier le Président
 - Remercier le Jury
 - Citer le titre de la thèse
+- Citer le laboratoire
+- Citer les encadrants
 
 * Introduction
 ** Mise en contexte
-*** Génération d'images ?
-> La génération d'images est un domaine vaste qui n'a cessé de s'améliorer.
-- Dresser le cadre
-  - Catalogue d'applications (dont transfert de style, gén. textures, text-to-image)
-  - Réseaux de neurones = Nouveau paradigme [Gatys]
-  - Gain d'intérêt au-delà de la sphère scientifique avec StyleGAN []
-  - État de l'art: Modèles à diffusion + CLIP
+*** Génération d'images
+> La génération d'images est un domaine dont les performances ont grandement progressé.
 *** Le prix de la performance
-> Cette amélioration due à l'apprentissage profond se traduit par une
-  augmentation de la taille en paramètres des modèles et du volume de
-  données d'entraînement.
-- Insister sur la taille croissante des réseaux
-  - Ordre de grandeur des paramètres
-  - Volume des données d'entraînements
+> Ce gain en performances et en capacité a un coût: celui du nombre de
+  paramètres et du nombre de données d'entraînement.
 *** Enjeux
-> Ce fait a différents impacts qui révèlent, à l'instant même, des
-  enjeux majeurs autour de l'IA.
-- Enjeux scientifiques
-  - Contraintes matérielles
-  - Reproductibilité des expériences
-- Enjeux éthiques
-  - Sécurité des données [Carlini] [Webster]
-  - Violation des droits d'auteurs
-- Enjeux de société
-  - Désinformation voire Propagande de guerre
-- Enjeux environementaux
-  - Coût colossal en énergie (fermes de GPUs, durée d'entraînement)
-*** Critères
-> La légereté et l'explicabilité des modèles s'imposent comme des
-  critères répondants à ces différents enjeux.
-> Sans oublier l'intérêt principal : générer des images de bonnes qualité !
-**** Critères - Légereté
-> Définition
-- État de l'art
-**** Critères - Explicabilité
-> Définition
-- Exemple (explications contrefactuelles [Jeanneret])
-*** Méthodes hybrides (Motivation)
-> Les réseaux profonds et les méthodes frugales ont des avantages et inconvénients complémentaires.
-> Thèse : Il est possible de combiner les deux pour garder chacun de leur avantage
-- Piste peu explorée à notre connaissance
+> Cette croissance révèle 4 enjeux majeurs.
+- Un enjeu scientifique lié à la difficulté de reproduire des expériences.
+- Un enjeu éthique lié à la quantité de données possiblement volée et non-sécurisée.
+- Un enjeu sociétal lié à l'utilisation des modèles génératifs à des fins malveillants.
+- Un enjeu environmental lié au coût en énergie nécessaire à l'entraînement des modèles de l'EdlA.
+*** Modèles légers
+> Diminuer le nombre de paramètres et de données d'entraînement nécessaire.
+- Entraînement few-shot, car on sait que la plupart des architectures d'EdlA sont instables (FastGAN).
+- Voire se débarrasser des réseaux, avec GPNN pour single image gen.
+*** Modèles explicables
+> Offrir des garanties vis-à-vis de la génération et des données.
+*** Problématique
+> Peut-on concilier la qualité de génération avec les critères de légereté et d'explicabilité des modèles ?
+*** Motivation
+> Essayons de combiner modèles profonds et méthodes frugales en des
+  méthodes hybrides. La piste est encore peu explorée.
+  
+> J'aimerais vous convaincre que ces méthodes hybrides ont un fort potentiel. En 3 points.
+
+** Concepts préliminaires
+*** Encodeurs
+> Architecture de réseaux de neurones qui transforment des images RGB en /features/.
+- Intéressant car:
+  - l'espace des features capture plus de choses que l'espace couleur -> avec méthode frugale
+  - établissent des métriques (LPIPS, FID, Précision/Rappel)
+*** Auto-encodeurs
+> Aussi, apprendre à décoder ces représentations (latents)
+- Est-ce que ses manipulations seront compatibles ?
+*** Méthodes à patchs
+> Notons qu'un patch pourra être vu comme une image et un vecteur
