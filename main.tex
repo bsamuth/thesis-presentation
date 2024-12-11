@@ -605,11 +605,11 @@
 
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/gatys.png}
-        \caption{[C. Gatys, 2014]}
+        \caption{[Gatys et la., 2014]}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/liu.png}
-        \caption{[S. Liu, 2021]}
+        \caption{[Liu et al., 2021]}
       \end{subfigure}
     \end{subfigure}
   \end{figure}
@@ -633,11 +633,11 @@
 
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/gatys.png}
-        \caption{[C. Gatys, 2014]}
+        \caption{[Gatys et al., 2014]}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/liu.png}
-        \caption{[S. Liu, 2021]}
+        \caption{[Liu et al., 2021]}
       \end{subfigure}
     \end{subfigure}
   \end{figure}
@@ -778,22 +778,6 @@
   \end{columns}
 \end{frame}
 
-% \begin{frame}{\secname~- \subsecname}
-%   \framesubtitle{Biais de performance}
-%   \begin{columns}
-%     \begin{column}{0.7\linewidth}
-%       \begin{figure}
-%         \includegraphics[width=\linewidth]{19.pdf}
-%       \end{figure}
-%     \end{column}
-%     \begin{column}{0.3\linewidth}
-%       \begin{itemize}
-%       \item Il ne favorise pas sa base d'entraînement (pas de mémorisation).
-%       \end{itemize}
-%     \end{column}
-%   \end{columns}
-% \end{frame}
-
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Explicable par design}
   \begin{columns}
@@ -834,34 +818,6 @@
     \end{column}
   \end{columns}  
 \end{frame}
-
-% \begin{frame}{\secname~- \subsecname}
-%   \framesubtitle{Comparaison quantitative - Precision}
-%   \begin{figure}
-%     \includegraphics[width=0.8\linewidth]{20.pdf}
-%     \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
-%   \end{figure}
-% \end{frame}
-
-% \begin{frame}{\secname~- \subsecname}
-%   \framesubtitle{Comparaison quantitative - Rappel}
-%   \begin{figure}
-%     \includegraphics[width=0.8\linewidth]{21.pdf}
-%     \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
-%   \end{figure}
-% \end{frame}
- 
-% \begin{frame}{\secname~- \subsecname}
-%   \framesubtitle{Coût computationnel}
-%   \begin{figure}
-%     \includegraphics[width=0.8\linewidth]{22.png}
-%   \end{figure}
-%   \begin{itemize}
-%   \item En échange d'un coût en paramètres raisonnable, notre méthode
-%     \emph{LatentPatch} peut se passer d'entraînement pour des performances
-%     similaires à \emph{FastGAN}.
-%   \end{itemize}
-% \end{frame}
 
 \subsection{Généralisation}
 \begin{frame}{\secname~- \subsecname}
@@ -941,12 +897,6 @@
   \end{figure}
 \end{frame}
 
-% \begin{frame}{\secname~- \subsecname}
-%   \framesubtitle{Comparaisons qualitative}
-%   \begin{figure}
-%     \includegraphics[width=0.9\linewidth]{comp_tab}
-%   \end{figure}
-% \end{frame}
 % ============================================
 % ============================================
 \section{Conclusion et Perspectives}
@@ -1023,5 +973,57 @@
 \makethanks
 
 \section{Suppléments}
+\begin{frame}
+  \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
+    \LARGE\bfseries \secname
+  \end{beamercolorbox}
+\end{frame}
+
+
+\subsection{LatentPatch}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Biais de performance}
+  \begin{figure}
+    \centering
+    \includegraphics[width=0.8\linewidth]{19.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - Precision}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{20.pdf}
+    \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - Rappel}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{21.pdf}
+    \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
+  \end{figure}
+\end{frame}
+ 
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Coût computationnel}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{22.png}
+  \end{figure}
+  \begin{itemize}
+  \item En échange d'un coût en paramètres raisonnable, notre méthode
+    \emph{LatentPatch} peut se passer d'entraînement pour des performances
+    similaires à \emph{FastGAN}.
+  \end{itemize}
+\end{frame}
+
+\subsection{GMM latent}
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaisons qualitative}
+  \begin{figure}
+    \includegraphics[width=0.9\linewidth]{comp_tab}
+  \end{figure}
+  \scriptsize (1) [Esser et al., 2021] ; (2) [Liu et al., 2020]
+\end{frame}
 
 \end{document}
