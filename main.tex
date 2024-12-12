@@ -75,6 +75,7 @@
         \end{subfigure}
       \end{figure}
 \end{frame}
+% Fait pendant la thèse
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Le prix de la performance}
@@ -127,7 +128,7 @@
       \begin{alertblock}{Enjeux de société}
         \begin{itemize}
         \item Désinformation
-        \item Propagande de guerre
+        \item Propagande de guerre % Enlever
         \end{itemize}
       \end{alertblock}
       \pause
@@ -140,7 +141,7 @@
   \end{columns}
 \end{frame}
 
-\subsection{Critères}
+\subsection{Modèles légers}
 % \begin{frame}{\secname~- \subsecname}
 %   \begin{exampleblock}{\centering Quels critères pour faire face à ces enjeux ?}
 %     \begin{itemize}
@@ -155,18 +156,19 @@
 % \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Modèles légers}
+  \framesubtitle{Objectifs}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      \begin{customblock}{Modèles légers / frugaux}        
+      \begin{customblock}{Modèles légers / frugaux}
         \begin{itemize}
-        \item \small Le - de paramètres
-        \item \small Le - de données d'entraînement
-        \item \small Le - d'opérations possible
+        \item \small Paramètres
+        \item \small Données d'entraînement
+        \item \small Opérations possible
         \end{itemize}
       \end{customblock}
-      \begin{alertblock}{Inconvénients}
+      \begin{alertblock}{Challenges}
         \begin{itemize}
+        \item \small Compromis qualité/diversité
         \item \small Champs d'action limité (ex: 1 seule image)
         \end{itemize}
       \end{alertblock}
@@ -187,11 +189,14 @@
         \end{subfigure}
       \end{figure}
     \end{column}
-  \end{columns}  
+  \end{columns}
 \end{frame}
+% Explicable à posteriori
+% Explicable par design ?
 
+\subsection{Modèles explicables}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Modèles explicables}
+  \framesubtitle{Objectifs}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{block}{Modèles explicables}        
@@ -202,10 +207,10 @@
         \item \small Offrir des garanties (biais, sécurité des données, ...)
         \end{itemize}
       \end{block}
-      \begin{alertblock}{Inconvénients}
+      \begin{alertblock}{Limitations et Challenges}
         \begin{itemize}
-        \item \small Difficile à appliquer
-        \item \small Souvent empirique
+        \item \small \emph{A posteriori}
+        \item \small Inexistant pour les modèles génératifs
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -234,9 +239,9 @@
     \begin{column}{0.5\linewidth}
       \begin{block}{Modèles profonds}
         \begin{itemize}
-        \item \small Photoréalistes
-        \item \small Génération variée
-        \item \small Mais peu explicables et lourds
+        \item \small Photoréalistes (qualité)
+        \item \small Génération variée (diversité)
+        \item \small Non-explicables et complexes
         \end{itemize}
       \end{block}      
     \end{column}
@@ -245,9 +250,9 @@
     \begin{column}{0.5\linewidth}
       \begin{customblock}{Méthodes frugales}
         \begin{itemize}
-        \item \small Légeres (certaines explicables)
-        \item \small Nécessitent peu de données
-        \item \small Mais au champs d'application restreint
+        \item \small Légères, explicables
+        \item \small Compromis qualité/diversité
+        \item \small Champ d'applications restreint
         \end{itemize}
       \end{customblock}      
     \end{column}    
@@ -295,6 +300,7 @@
 % ============================================
 % ============================================
 \section{Concepts préliminaires}
+% Justifier leur utilisation
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries \secname
@@ -308,9 +314,8 @@
     \begin{column}{0.4\linewidth}
       \begin{block}{Encodeurs}
         \begin{itemize}
-        \item D'abord pour la classification (prédiction de labels)
-        \item Image RGB en \alert{\emph{features}}
-        \item Aussi compression, métrique, etc.…
+        \item Entraînement supervisé (classification)
+        \item Usage : features, métriques
         \end{itemize}
       \end{block}
     \end{column}
@@ -332,12 +337,12 @@
     \caption{Schéma classique d'un auto-encodeur}
     \begin{block}{Reconstruction}
       \centering
-      \begin{itemize}
+      \begin{itemize}        
       \item Optimisation d'un objectif de reconstruction
       \end{itemize}
       $\underset{E,D}{\min}\ \underset{x \sim p(x)}{\mathbb{E}}\left[\mathcal{L}_{\text{rec}}(x,D(E(x)))\right]$
-      \begin{itemize}        
-      \item Représentation \alert{latente}
+      \begin{itemize}
+      \item Représentation \alert{latente} et compacte
       \end{itemize}
 
     \end{block}
@@ -346,6 +351,8 @@
 \end{frame}
 
 \subsection{Méthodes à patchs}
+% Alléger déf
+% parler de patchmatch
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Définition}
   \begin{columns}
@@ -357,43 +364,46 @@
     \end{column}
     
     \begin{column}{0.55\linewidth}
-      \emph{Image} : $x \in \mathbb{R}^{W \times H \times C}$
-      \begin{itemize}
-        \footnotesize 
-      \item de taille $W \times H$
-      \item à $C$ canaux de couleurs
-      \end{itemize}
+      % \emph{Image} : $x \in \mathbb{R}^{W \times H \times C}$
+      % \begin{itemize}
+      %   \footnotesize 
+      % \item de taille $W \times H$
+      % \item à $C$ canaux de couleurs
+      % \end{itemize}
       
-      \vfill
-      \emph{Extraction de patch} : $P$
-      \begin{itemize}
-        \footnotesize 
-      \item Opérateur linéaire
-      \item Extrait des patchs de taille $\sigma \times \sigma$
-      \item Gère les effets de bords
-      \end{itemize}
+      % \vfill
+      % \emph{Extraction de patch} : $P$
+      % \begin{itemize}
+      %   \footnotesize 
+      % \item Opérateur linéaire
+      % \item Extrait des patchs de taille $\sigma \times \sigma$
+      % \item Gère les effets de bords
+      % \end{itemize}
 
-      \vfill
-      \emph{Position} : $i \in \Omega$
-      \begin{itemize}
-        \footnotesize 
-      \item $\Omega = \{1,\dots,W\}\times\{1,\dots,H\}$
-      \end{itemize}
+      % \vfill
+      % \emph{Position} : $i \in \Omega$
+      % \begin{itemize}
+      %   \footnotesize 
+      % \item $\Omega = \{1,\dots,W\}\times\{1,\dots,H\}$
+      % \end{itemize}
 
-      \vfill
-      \emph{Patch} : $P(x,i) \in \mathbb{R}^{\sigma \times \sigma \times C}$
-      \begin{itemize}
-        \footnotesize 
-        \item $\forall (u,v) \in \{0,\dots,\sigma-1\}^2,\ P(x,i)_{u, v, \cdot} =
-          x_{i+(u,v)}$
-        \item par simplicité, sous forme vectorisée (\emph{ie.} $\mathbb{R}^{\sigma^2 C}$)
-      \end{itemize}      
+      % \vfill
+      % \emph{Patch} : $P(x,i) \in \mathbb{R}^{\sigma \times \sigma \times C}$
+      % \begin{itemize}
+      %   \footnotesize 
+      %   \item $\forall (u,v) \in \{0,\dots,\sigma-1\}^2,\ P(x,i)_{u, v, \cdot} =
+      %     x_{i+(u,v)}$
+      %   \item par simplicité, sous forme vectorisée (\emph{ie.} $\mathbb{R}^{\sigma^2 C}$)
+      % \end{itemize}     
     \end{column}
   \end{columns}  
 \end{frame}
 
+% Warping
+% Méthode de génération pour les méthodes à patchs
+% Notation R o W
 \begin{frame}{\secname~- \subsecname} 
-  \framesubtitle{Agrégation}
+  \framesubtitle{Warping}
   \begin{columns}
     \begin{column}{0.6\linewidth}
       \begin{exampleblock}{Carte d'assignement de patchs}
@@ -420,11 +430,13 @@
 \section{Transfert de style par contrainte de patchs}
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries Contribution 1.\\ \secname
+    \LARGE\bfseries Contribution 1.\\ \secname    
   \end{beamercolorbox}
+  TODO: Publication ICIP GRETSI
 \end{frame}
 
 \subsection{Contexte}
+% Image I, R, noter J
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
     \begin{column}{0.6\linewidth}
@@ -570,7 +582,7 @@
         \end{center}
         
         \begin{itemize}
-        \item Méthode pour le transport optimal
+        \item Méthode inspirée par le transport optimal
         \item Durant les différentes itérations de \emph{PatchMatch} [C.~Barnes, 2009]
         \item Converge vers un point fixe
         \end{itemize}
@@ -605,7 +617,7 @@
 
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/gatys.png}
-        \caption{[Gatys et la., 2014]}
+        \caption{[Gatys et al., 2014]}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/liu.png}
@@ -702,7 +714,7 @@
     \begin{column}{0.2\linewidth}
       \begin{itemize}
       \item \small Auto-encodeur
-      \item \small Adversariel
+      \item \small Adversaire
       \item \small Quantifié
       \item \small Spatial
         \vspace{1em}
@@ -796,13 +808,6 @@
 
 \subsection{Évaluation}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaison quantitative - FID}
-  \begin{figure}
-    \includegraphics[width=0.8\linewidth]{fid-vs-subset.pdf}
-  \end{figure}
-\end{frame}
-
-\begin{frame}{\secname~- \subsecname}
   \framesubtitle{Comparaison qualitative}
   \begin{columns}
     \begin{column}{0.75\linewidth}
@@ -819,6 +824,13 @@
   \end{columns}  
 \end{frame}
 
+\begin{frame}{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - FID}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{fid-vs-subset.pdf}
+  \end{figure}
+\end{frame}
+
 \subsection{Généralisation}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Tentative de généralisation}
@@ -830,10 +842,15 @@
       \end{figure}
     \end{column}
     \begin{column}{0.4\linewidth}
+      \begin{exampleblock}{\emph{LatentPatch}}
+        \begin{itemize}
+        \item Parfait en \emph{few-shot} : visages perceptuellement proches
+        \end{itemize}
+      \end{exampleblock}
       \begin{alertblock}{\emph{LatentPatch} généralisé}
         \begin{itemize}
-        \item Dans le cas \emph{few-shot} : visages perceptuellement proches
-        \item Sensible aux échantillons qui varient fortement
+        \item Sensible aux échantillons qui varient
+        \item Manque de cohérence spatiale
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -843,6 +860,11 @@
 % ============================================
 % ============================================
 \section{Modèle de mélanges gaussiens latents}
+% INtroduire le problème
+% Cohérence spatiale
+% Modèle gaussien pour capturrer
+
+% Motiver par faible rang sampling
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries Contribution 3. \\ \secname
@@ -850,6 +872,8 @@
 \end{frame}
 
 \subsection{Méthode}
+% Idée: Contraindre les corrélations spatiales en exploitant les covariances des données
+% Illustrer bruit blanc vs bruit corrélé
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{lrgmm.pdf}
@@ -866,7 +890,7 @@
     \begin{column}{0.5\linewidth}
         \begin{exampleblock}{}
         \begin{itemize}
-        \item \small Projeter parmi les $k$-patchs plus proches voisins
+        \item \small Projeter chaque patch au plus proche voisin
         \item \small Décoder
         \end{itemize}
       \end{exampleblock}
@@ -910,7 +934,7 @@
 \begin{frame}{\secname~- \subsecname}
   \begin{customblock}{Qualité, légèreté, explicabilité}
     \begin{itemize}
-    \item La croissance des modèles $\rightarrow$ un problème
+    \item Problème : la croissance des modèles 
     \item La légèreté et l'explicabilité sont souhaitables
     \item Les modèles hybrides peuvent répondre à ces critères
     \end{itemize}
@@ -942,7 +966,7 @@
         \item Propriétés intéressantes: harmonisation, agrégation texturée
 
         \item \alert{Idée}: Apprendre des réseaux plus légers qui isolent ces propriétés
-        \item Voire le faire sans réseau de neurones
+        \item Sans réseau de neurones ?
         \end{itemize}
 
       \end{block}
@@ -950,7 +974,7 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}{\secname~- \subsecname} % illustrer avec paysages
   \begin{columns}
     \begin{column}{\linewidth}
       \begin{block}{Perspective 2 – Étendre les capacités du modèle}
