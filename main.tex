@@ -11,6 +11,7 @@
 \usepackage{mathtools,bbm}
 \usepackage[justification=centering]{caption}
 \usepackage[justification=centering]{subcaption}
+\usepackage[export]{adjustbox}
 
 \graphicspath{{./img/},{./figs/}}
 
@@ -75,26 +76,26 @@
         \end{subfigure}
       \end{figure}
 \end{frame}
-% Fait pendant la thèse
+
 
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Le prix de la performance}
   \begin{figure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{gatys}
-      \caption{{\emph{Neural style transfer}\newline[Gatys et al., 2014]\newline 3M de paramètres}}
+      \caption{{\emph{Neural style transfer}\newline[Gatys et al., 2014]\newline 15M de paramètres\newline 2 images}}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{stylegan}                
-      \caption{{\emph{StyleGAN}\newline[Karras et al., 2019]\newline 50M de paramètres}}
+      \caption{{\emph{StyleGAN}\newline[Karras et al., 2019]\newline 30M de paramètres\newline 70,000 images}}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{esser}                      
-      \caption{\emph{Taming transformers}\newline[Esser et al., 2021]\newline 800M de paramètres}
+      \caption{\emph{Taming transformers}\newline[Esser et al., 2021]\newline 800M de paramètres\newline 100,000 images}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{stable-diffusion}
-      \caption{\emph{Stable Diffusion}\newline[Rombach et al., 2022]\newline 1Mrd de paramètres}
+      \caption{\emph{Latent Diffusion}\newline[Rombach et al., 2022]\newline 1Mrd de paramètres\newline 2Mrd images}
     \end{subfigure}
   \end{figure}
   \begin{exampleblock}{}
@@ -128,7 +129,7 @@
       \begin{alertblock}{Enjeux de société}
         \begin{itemize}
         \item Désinformation
-        \item Propagande de guerre % Enlever
+        \item Propagande
         \end{itemize}
       \end{alertblock}
       \pause
@@ -163,23 +164,23 @@
         \begin{itemize}
         \item \small Paramètres
         \item \small Données d'entraînement
-        \item \small Opérations possible
+        \item \small Opérations possibles
         \end{itemize}
       \end{customblock}
       \begin{alertblock}{Challenges}
         \begin{itemize}
         \item \small Compromis qualité/diversité
-        \item \small Champs d'action limité (ex: 1 seule image)
+        \item \small Champ d'action limité (ex: 1 seule image)
         \end{itemize}
       \end{alertblock}
     \end{column}
     \begin{column}{0.5\linewidth}
       \begin{figure}
         \centering
-        \begin{subfigure}{0.45\linewidth}
+        \begin{subfigure}{\linewidth}
           \centering
-          \includegraphics[width=0.8\linewidth]{fastgan.png}
-          \caption{Génération \emph{few-shot} (FastGAN) [Liu et al., 2020]}
+          \includegraphics[width=0.4\linewidth]{fastgan.png}
+          \caption{Génération \emph{few-shot} (FastGAN) [Liu et al., 2020]}
         \end{subfigure}
         
         \begin{subfigure}{\linewidth}
@@ -191,8 +192,7 @@
     \end{column}
   \end{columns}
 \end{frame}
-% Explicable à posteriori
-% Explicable par design ?
+
 
 \subsection{Modèles explicables}
 \begin{frame}{\secname~- \subsecname}
@@ -217,7 +217,7 @@
     \begin{column}{0.5\linewidth}
       \begin{figure}
         \centering
-        \includegraphics[width=1\linewidth]{sauer}
+        \includegraphics[width=0.8\linewidth]{sauer}
         \caption{{Explications contrefactuelles \newline [Sauer et al., 2021]}}
       \end{figure}
     \end{column}
@@ -273,7 +273,7 @@
 
 \subsection{Méthodes ``hybrides''}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Motivation}
+  \framesubtitle{Plan}
   \begin{columns}
     \begin{column}{0.3\linewidth}
       \begin{itemize}
@@ -284,7 +284,7 @@
     \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-      \item \small 2. Démontrer leurs \alert{économies en calculs} dans la génération \emph{few-shot} de visages
+      \item \small 2. Démontrer leur \alert{efficacité} dans la génération \emph{few-shot} de visages
       \end{itemize}      
     \end{column}
     \begin{column}{0.3\linewidth}
@@ -356,14 +356,21 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Définition}
   \begin{columns}
-    \begin{column}{0.45\linewidth}
+    \begin{column}{0.6\linewidth}
       \begin{figure}
         \centering
-        \includegraphics[width=\linewidth]{2.png}
+        \includegraphics[valign=m,width=0.55\linewidth]{2.png}
+        \includegraphics[valign=m,width=0.4\linewidth]{3.png}
       \end{figure}
     \end{column}
     
-    \begin{column}{0.55\linewidth}
+    \begin{column}{0.4\linewidth}
+      \begin{itemize}
+      \item Synthèse de texture [Efros et Leung, 1999], [Ashikhmin et al., 2001]
+        \vspace{1em}
+      \item Recherche de patch plus proche voisin
+      \item \emph{PatchMatch} [Barnes et al., 2009]
+      \end{itemize}
       % \emph{Image} : $x \in \mathbb{R}^{W \times H \times C}$
       % \begin{itemize}
       %   \footnotesize 
@@ -403,22 +410,23 @@
 % Méthode de génération pour les méthodes à patchs
 % Notation R o W
 \begin{frame}{\secname~- \subsecname} 
-  \framesubtitle{Warping}
+  \framesubtitle{Affectation, Warping}
   \begin{columns}
-    \begin{column}{0.6\linewidth}
-      \begin{exampleblock}{Carte d'assignement de patchs}
+    \begin{column}{0.55\linewidth}
+      \begin{exampleblock}{Carte d'affectation}
         \begin{itemize}
         \item Permet l'agrégation/le \emph{warping} de patchs
-        \item (Re)construire une image à partir d'un \alert{assignement de coordonnées}
+        \item (Re)construire une image à partir d'une \alert{affectation de coordonnées}
         \item Génération explicable
         \end{itemize}
       \end{exampleblock}
     \end{column}
-    \begin{column}{0.4\linewidth}
+    \begin{column}{0.45\linewidth}
       \begin{figure}
         \centering
         \includegraphics[height=0.6\textheight]{nnf.png}
-        \caption{(a) Image $x$ (b) Identité \\ (d) Image $y$ (c) Carte d'assignement}
+        \caption{(a) Image $x = x \circ W_b$ \quad(b) Identité $W_b$
+          \\ (c) Image $y = x \circ W_d$ \quad(d) Carte $W_d$}
       \end{figure}
     \end{column}
   \end{columns}
@@ -429,25 +437,55 @@
 % ============================================
 \section{Transfert de style par contrainte de patchs}
 \begin{frame}
+  \vfill
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
-    \LARGE\bfseries Contribution 1.\\ \secname    
+    \LARGE\bfseries Contribution 1.\\ \secname
   \end{beamercolorbox}
-  TODO: Publication ICIP GRETSI
+  \vfill
+  \begin{itemize}
+  \item \footnotesize Benjamin Samuth, David
+    Tschumperlé, and Julien Rabin (2022). ``A Patch-Based Approach for
+    Artistic Style Transfer Via Constrained Multi-Scale Image
+    Matching'', \emph{2022 IEEE International Conference on Image
+      Processing (ICIP)}.
+  \item \footnotesize Benjamin Samuth, David Tschumperlé, and Julien Rabin (2022).
+    ``Transfert de style d’images par mise en correspondance multi-échelle et
+    contrainte de patchs'', \emph{GRETSI 2022}.
+  \end{itemize}
 \end{frame}
 
 \subsection{Contexte}
 % Image I, R, noter J
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
+    \begin{column}{0.4\linewidth}
+      \begin{figure}
+        \centering
+        \begin{subfigure}{0.45\linewidth}\centering
+          \includegraphics[width=0.6\linewidth]{balloon/starry_night_s}
+          \caption{Style $R$}
+        \end{subfigure}
+        \begin{subfigure}{0.45\linewidth}\centering        
+          \includegraphics[width=0.6\linewidth]{balloon/balloon_s}
+          \caption{Contenu $I$}
+        \end{subfigure}
+
+        \begin{subfigure}{0.8\linewidth}\centering
+          \includegraphics[width=0.9\linewidth]{balloon/gatys.png}
+          \caption{Synthèse $J$}
+        \end{subfigure}
+      \end{figure}
+    \end{column}
     \begin{column}{0.6\linewidth}
       \begin{customblock}{Principe du transfert de style}
         \begin{itemize}
-        \item \small Style : ensemble de \alert{caractéristiques esthétiques} propres à une image
-        \item \small Transfert de style : poser le style artistique d'une
-          image de \alert{référence} $R$ sur une image de \alert{contenu} $I$ (\emph{Input})
+        \item \small Style : \alert{caractéristiques esthétiques}
+        \item \small Transfert de style : style d'une
+          image de \alert{référence} $R$ vers une image de \alert{contenu} $I$ (\emph{Input})
+        \item \small Challenge : Modéliser un style
         \end{itemize}    
       \end{customblock}
-      \begin{block}{\emph{Neural style transfer} [L. Gatys, 2016]}
+      \begin{block}{\emph{Neural style transfer} [Gatys et al., 2016]}
         \begin{itemize}
         \item \small Optimise les pixels d'une image selon les
           \emph{features} \emph{VGG-16} [Simonyan et al., 2014]
@@ -456,17 +494,46 @@
         \end{itemize}
       \end{block}
     \end{column}
-    \begin{column}{0.4\linewidth}
-      \begin{figure}
-        \centering
-        \includegraphics[width=\linewidth]{balloon/gatys.png}
-        \caption{Méthode de [L. Gatys, 2016]}
-      \end{figure}
-    \end{column}
   \end{columns}
 \end{frame}
 
 \subsection{Méthode}
+\begin{frame}{\secname~- \subsecname}
+  \begin{columns}
+    \begin{column}{0.4\linewidth}
+      \begin{figure}
+        \centering
+        \begin{subfigure}{0.45\linewidth}\centering
+          \includegraphics[width=0.6\linewidth]{balloon/starry_night_s}
+          \caption{Style $R$}
+        \end{subfigure}
+        \begin{subfigure}{0.45\linewidth}\centering        
+          \includegraphics[width=0.6\linewidth]{balloon/balloon_s}
+          \caption{Contenu $I$}
+        \end{subfigure}
+
+        \begin{subfigure}{0.8\linewidth}\centering
+          \includegraphics[width=0.9\linewidth]{balloon/ours.png}
+          \caption{Synthèse $J$}
+        \end{subfigure}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.6\linewidth}
+      \begin{exampleblock}{Notre méthode}
+        \begin{itemize}
+        \item Méthode à patchs
+        \item Méthode multi-échelle
+        \item Échelle grossière à fine ($k=N..0$)
+          \vspace{1em}
+          \pause
+        \item \alert{Contrainte d'occurrence}
+        \item \alert{Métriques de patchs}
+        \end{itemize}
+      \end{exampleblock}
+    \end{column}
+  \end{columns}
+\end{frame}
+
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \centering
@@ -508,7 +575,7 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Multi-échelle}
+  \framesubtitle{Passage à l'échelle}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{itemize}
@@ -582,9 +649,9 @@
         \end{center}
         
         \begin{itemize}
+        \item Initialisé à 0 pour chaque $y \in \Omega_R$.
         \item Méthode inspirée par le transport optimal
-        \item Durant les différentes itérations de \emph{PatchMatch} [C.~Barnes, 2009]
-        \item Converge vers un point fixe
+        \item Durant les différentes itérations de \emph{PatchMatch} [Barnes et al., 2009]
         \end{itemize}
       \end{block}    
     \end{column}
@@ -617,7 +684,7 @@
 
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/gatys.png}
-        \caption{[Gatys et al., 2014]}
+        \caption{\scriptsize [Gatys et al., 2014]}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/liu.png}
@@ -645,7 +712,7 @@
 
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/gatys.png}
-        \caption{[Gatys et al., 2014]}
+        \caption{\scriptsize[Gatys et al., 2014]}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/liu.png}
@@ -658,13 +725,13 @@
 
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.52\linewidth}
       \begin{figure}
         \centering
         \includegraphics[width=0.9\linewidth]{7.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.5\linewidth}
+    \begin{column}{0.48\linewidth}
       \begin{block}{Pertinence des métriques}
         \begin{itemize}
         \item \emph{``Patch-features''} $\Phi$
@@ -681,12 +748,25 @@
 % ============================================
 \section{Patchs latents pour la génération}
 \begin{frame}
+  \vfill
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries Contribution 2.\\ \secname
   \end{beamercolorbox}
+  \vfill
+  \begin{itemize}
+  \item \footnotesize Benjamin Samuth, Julien Rabin, David Tschumperlé, and
+    Frédéric Jurie (2023). ``LatentPatch: A Non-Parametric Approach for
+    Face Generation and Editing'', \emph{2023 IEEE International
+      Conference on Image Processing (ICIP)}.
+  \item \footnotesize Benjamin Samuth, Julien Rabin, David Tschumperlé, and
+    Frédéric Jurie (2023). ``LATENTPATCH : Une approche non-paramétrique
+    pour la génération et l’édition de visages'', \emph{GRETSI 2023}.
+  \item \footnotesize Benjamin Samuth, Julien Rabin, David Tschumperlé, and Frédéric Jurie
+    (2024). ``A Non-Parametric Latent Model for Face Generation'', \emph{SSRN 4772632}.
+  \end{itemize}
 \end{frame}
 
-\subsection{Contexte}
+\subsection{Motivation}
 % \begin{frame}{\secname~- \subsecname}
 %   \framesubtitle{Génération \emph{``few-shot''}}
 %   \begin{itemize}
@@ -706,10 +786,28 @@
 %   \item \alert{Inconvénient} : phase d'apprentissage longue malgré le peu de données ($\sim$2h)
 %   \end{itemize}  
 % \end{frame}
+\begin{frame}{\secname~- \subsecname}
+  \begin{columns}
+    \begin{column}{0.3\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=1\linewidth]{25.png}
+      \end{figure}
+    \end{column}
+    \begin{column}{0.7\linewidth}
+      \begin{itemize}
+      \item Extension de la méthode pour la génération
+      \item Visages recalés $\rightarrow$ Patchs alignés
+        \vspace{1em}
+      \item Besoin de \alert{régularisation}
+      \end{itemize}
+    \end{column}
+  \end{columns}
+\end{frame}
 
 \subsection{\emph{VQGAN}}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{[Esser et al., 2021]}
+  \framesubtitle{``Taming transformers'' [Esser et al., 2021]}
   \begin{columns}
     \begin{column}{0.2\linewidth}
       \begin{itemize}
@@ -730,9 +828,9 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Propriété}
+  \framesubtitle{Propriétés}
   \begin{figure}
-    \includegraphics[width=\linewidth]{16.png}
+    \includegraphics[width=0.7\linewidth]{16.png}
   \end{figure}
   \begin{itemize}
   \item \alert{Estompe les bords} de manière photoréaliste
@@ -741,9 +839,9 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Pertinence de l'auto-encodeur}
+  \framesubtitle{Le décodeur est-il un générateur ?}
   \begin{figure}
-    \includegraphics[width=\linewidth]{15.png}
+    \includegraphics[width=0.6\linewidth]{15.png}
   \end{figure}
   \begin{itemize}
   \item L'auto-encodeur \alert{n'est pas} un générateur à lui seul.        
@@ -759,8 +857,8 @@
   \begin{itemize}
   \item $E, D$ : VQGAN pré-entraîné sur FFHQ
   \item $\mathcal{X}$ : \emph{Dataset} limité
-  \item $R$ : Réduction de dim. par ACP
-  \item $G$ : Génération d'une représentation latente par patchs
+  \item $R$ : Réduction de dim. par ACP sur les canaux
+  \item $G$ : \alert{Génération d'une représentation latente par patchs}
   \end{itemize}
 \end{frame}
 
@@ -835,13 +933,14 @@
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Tentative de généralisation}
   \begin{columns}
-    \begin{column}{0.6\linewidth}
+    \begin{column}{0.5\linewidth}
       \begin{figure}
         \centering
+        \includegraphics[width=\linewidth]{latentpatch_full_sources.png}
         \includegraphics[width=\linewidth]{latentpatch_full.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.4\linewidth}
+    \begin{column}{0.5\linewidth}
       \begin{exampleblock}{\emph{LatentPatch}}
         \begin{itemize}
         \item Parfait en \emph{few-shot} : visages perceptuellement proches
@@ -866,14 +965,41 @@
 
 % Motiver par faible rang sampling
 \begin{frame}
+  \vfill
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries Contribution 3. \\ \secname
   \end{beamercolorbox}
+  \vfill
+  \begin{itemize}
+    \item \footnotesize Benjamin Samuth, Julien Rabin, Frédéric Jurie, and David
+      Tschumperlé (2024). ``A Low Rank Gaussian Mixture Latent Model for
+      Face Generation'', \emph{International Conference on Pattern
+        Recognition}.
+  \end{itemize}
 \end{frame}
 
 \subsection{Méthode}
-% Idée: Contraindre les corrélations spatiales en exploitant les covariances des données
-% Illustrer bruit blanc vs bruit corrélé
+\begin{frame}{\secname~- \subsecname}
+  \begin{figure}\centering
+    \begin{subfigure}{0.3\linewidth}\centering
+      \includegraphics[width=0.8\linewidth]{random_noise_q}
+      \caption{Bruit blanc latent}
+    \end{subfigure}
+    \begin{subfigure}{0.3\linewidth}\centering
+      \includegraphics[width=0.8\linewidth]{random_lr-gmm}
+      \caption{Bruit corrélé latent}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}\centering
+  \item \alert{Idée}: Contraindre les \alert{corrélations spatiales} 
+  \end{itemize}
+  \begin{exampleblock}{Modèles de mélange gaussien (\emph{GMM})}
+    \begin{itemize}
+    \item Exploite les covariances des données
+    \item Prend en compte la diversité des échantillons
+    \end{itemize}
+  \end{exampleblock}  
+\end{frame}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{lrgmm.pdf}
@@ -974,10 +1100,10 @@
   \end{columns}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname} % illustrer avec paysages
+\begin{frame}{\secname~- \subsecname}
   \begin{columns}
-    \begin{column}{\linewidth}
-      \begin{block}{Perspective 2 – Étendre les capacités du modèle}
+    \begin{column}{0.6\linewidth}
+      \begin{block}{Perspective 2 – Étendre les capacités du modèle}        
         \begin{itemize}
         \item \alert{Limite}: Génération de visages alignés seulement
         \item D'autres modalités non-triviales ?
@@ -986,8 +1112,13 @@
         \item \alert{Idée}: Déléguer la tâche à un réseau léger
           (initialisation), puis raffiner avec des patchs
         \end{itemize}
-
       \end{block}
+    \end{column}
+    \begin{column}{0.4\linewidth}
+      \begin{figure}
+        \centering
+        \includegraphics[width=\linewidth]{24.png}
+      \end{figure}
     \end{column}
   \end{columns}
 \end{frame}
@@ -997,7 +1128,7 @@
 \makethanks
 
 \section{Suppléments}
-\begin{frame}
+\begin{frame}[noframenumbering]
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries \secname
   \end{beamercolorbox}
@@ -1005,7 +1136,7 @@
 
 
 \subsection{LatentPatch}
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Biais de performance}
   \begin{figure}
     \centering
@@ -1013,7 +1144,7 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Comparaison quantitative - Precision}
   \begin{figure}
     \includegraphics[width=0.8\linewidth]{20.pdf}
@@ -1021,7 +1152,7 @@
   \end{figure}
 \end{frame}
 
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Comparaison quantitative - Rappel}
   \begin{figure}
     \includegraphics[width=0.8\linewidth]{21.pdf}
@@ -1029,7 +1160,7 @@
   \end{figure}
 \end{frame}
  
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Coût computationnel}
   \begin{figure}
     \includegraphics[width=0.8\linewidth]{22.png}
@@ -1042,7 +1173,7 @@
 \end{frame}
 
 \subsection{GMM latent}
-\begin{frame}{\secname~- \subsecname}
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Comparaisons qualitative}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{comp_tab}
