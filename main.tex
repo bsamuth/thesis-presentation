@@ -64,7 +64,7 @@
         \end{subfigure}        
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{gatys}
-          \caption{{\footnotesize Transfert de style \newline {\scriptsize [Gatys et al., 2014]}}}
+          \caption{{\footnotesize Transfert de style \newline {\scriptsize [Gatys et al., 2016]}}}
         \end{subfigure}
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{stylegan}
@@ -797,6 +797,7 @@
     \begin{column}{0.7\linewidth}
       \begin{itemize}
       \item Extension de la méthode pour la génération
+      \item Plusieurs images
       \item Visages recalés $\rightarrow$ Patchs alignés
         \vspace{1em}
       \item Besoin de \alert{régularisation}
@@ -958,7 +959,7 @@
 
 % ============================================
 % ============================================
-\section{Modèle de mélanges gaussiens latents}
+\section{Modèle de mélange gaussien latents}
 % INtroduire le problème
 % Cohérence spatiale
 % Modèle gaussien pour capturrer
@@ -978,7 +979,7 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Méthode}
+\subsection{Motivation}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}\centering
     \begin{subfigure}{0.3\linewidth}\centering
@@ -1000,6 +1001,8 @@
     \end{itemize}
   \end{exampleblock}  
 \end{frame}
+
+\subsection{Méthode}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{lrgmm.pdf}
@@ -1079,13 +1082,13 @@
 \subsection{Perspectives}
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
-    \begin{column}{0.3\linewidth}
+    \begin{column}{0.5\linewidth}
       \begin{figure}
         \centering
-        \includegraphics[width=1\linewidth]{25.png}
+        \includegraphics[width=1\linewidth]{J_W_10.png}
       \end{figure}
     \end{column}
-    \begin{column}{0.7\linewidth}
+    \begin{column}{0.5\linewidth}
       \begin{block}{Perspective 1 – S'affranchir des gros réseaux}
         \begin{itemize}
         \item \alert{Limite}: Dépendance à \emph{VQGAN}
@@ -1159,7 +1162,15 @@
     \caption{\small Calculé avec \emph{Improved Precision/Recall} [Kynkäänniemi et al., 2019]}
   \end{figure}
 \end{frame}
- 
+
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
+  \framesubtitle{Comparaison quantitative - Erreur perceptuelle moyenne}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{avg-nn-lpips.pdf}
+    \caption{\small Calculé avec \emph{LPIPS} [Zhang et al., 2018]}
+  \end{figure}
+\end{frame}
+
 \begin{frame}[noframenumbering]{\secname~- \subsecname}
   \framesubtitle{Coût computationnel}
   \begin{figure}
@@ -1174,11 +1185,25 @@
 
 \subsection{GMM latent}
 \begin{frame}[noframenumbering]{\secname~- \subsecname}
-  \framesubtitle{Comparaisons qualitative}
+  \framesubtitle{Comparaisons quantitative}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{comp_tab}
   \end{figure}
   \scriptsize (1) [Esser et al., 2021] ; (2) [Liu et al., 2020]
+\end{frame}
+
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
+  \framesubtitle{Carte d'affectation}
+  \begin{figure}
+    \includegraphics[width=0.8\linewidth]{teaser_0}
+  \end{figure}
+\end{frame}
+
+\begin{frame}[noframenumbering]{\secname~- \subsecname}
+  \framesubtitle{Centroïdes}
+  \begin{figure}
+    \includegraphics[width=\linewidth]{centroids}
+  \end{figure}
 \end{frame}
 
 \end{document}
