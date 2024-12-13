@@ -1091,10 +1091,10 @@
     \begin{column}{0.5\linewidth}
       \begin{block}{Perspective 1 – S'affranchir des gros réseaux}
         \begin{itemize}
-        \item \alert{Limite}: Dépendance à \emph{VQGAN}
-        \item Propriétés intéressantes: harmonisation, agrégation texturée
+        \item \alert{Limite} : Dépendance à \emph{VQGAN}
+        \item Propriétés intéressantes : harmonisation, agrégation texturée
 
-        \item \alert{Idée}: Apprendre des réseaux plus légers qui isolent ces propriétés
+        \item \alert{Idée} : Apprendre des réseaux plus légers qui isolent ces propriétés
         \item Sans réseau de neurones ?
         \end{itemize}
 
@@ -1108,11 +1108,11 @@
     \begin{column}{0.6\linewidth}
       \begin{block}{Perspective 2 – Étendre les capacités du modèle}        
         \begin{itemize}
-        \item \alert{Limite}: Génération de visages alignés seulement
+        \item \alert{Limite} : Génération de visages alignés seulement
         \item D'autres modalités non-triviales ?
 
         \item Tests sur auto-encodeurs génériques et visages non-recalés non concluants
-        \item \alert{Idée}: Déléguer la tâche à un réseau léger
+        \item \alert{Idée} : Déléguer la tâche à un réseau léger
           (initialisation), puis raffiner avec des patchs
         \end{itemize}
       \end{block}
@@ -1200,10 +1200,16 @@
 \end{frame}
 
 \begin{frame}[noframenumbering]{\secname~- \subsecname}
-  \framesubtitle{Centroïdes}
+  \framesubtitle{Clusters, centroïdes}
   \begin{figure}
-    \includegraphics[width=\linewidth]{centroids}
+    \includegraphics[width=\linewidth]{centroids}    
   \end{figure}
+  \begin{itemize}
+  \item Échantillonnage : $d_k = \floor*{\lambda \pi_k d_0}$
+  \item $\lambda$ : Température
+  \item $\pi_k$ : Amplitude du cluster $k$
+  \item $d_0$ : Dimension totale (2048)
+  \end{itemize}
 \end{frame}
 
 \end{document}
