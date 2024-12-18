@@ -5,7 +5,7 @@
 
 \usetheme{greyc}
 %Choose your language
-\def\lang{french} %set it to english or french to have the logo in the good language
+\def\lang{english} %set it to english or french to have the logo in the good language
 
 \usepackage{amsmath,amsfonts,amssymb,latexsym}
 \usepackage{mathtools,bbm}
@@ -23,9 +23,7 @@
 \DeclarePairedDelimiter\ceil{\lceil}{\rceil}
 \DeclarePairedDelimiter\floor{\lfloor}{\rfloor}
 
-
-
-\title[Modèles hybrides pour la génération d'images]{Des modèles hybrides combinant réseaux de neurones et méthodes à patchs pour la génération d'images}
+\title[Hybrid models for image generation]{Hybrid models for image generation}
 \subtitle{}
 \author[Benjamin Samuth]{Benjamin Samuth}
 \institute[Normandie University]{Normandie Univ, UNICAEN, ENSICAEN, CNRS, GREYC, Caen, FRANCE}
@@ -42,13 +40,13 @@
 % ============================================
 \section{Introduction}
 
-\subsection{Contexte}
+\subsection{Context}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{L'évolution de la Génération d'images}
+  \framesubtitle{Evolution of Image Generation}
       \begin{itemize}
-      \item Vaste ensemble d'applications
-      \item Principalement à usage artistique
-      \item Apprentissage profond $\Rightarrow$ \alert{Nouveau paradigme}
+      \item Wide range of applications
+      \item Usually for artistic uses
+      \item Deep learning $\Rightarrow$ \alert{New paradigm}
       \end{itemize}
       
       \begin{figure}
@@ -56,93 +54,91 @@
         \centering
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{texture.png}
-          \caption{{\scriptsize Synthèse de texture \newline {\tiny [Ashikhmin et al., 2001]}}}
+          \caption{{\scriptsize Texture synthesis \newline {\tiny [Ashikhmin et al., 2001]}}}
         \end{subfigure}
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{patchmatch.png}
-          \caption{{\footnotesize Édition \newline {\scriptsize [Barnes et al., 2009]}}}
+          \caption{{\footnotesize Editing \newline {\scriptsize [Barnes et al., 2009]}}}
         \end{subfigure}        
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{gatys}
-          \caption{{\footnotesize Transfert de style \newline {\scriptsize [Gatys et al., 2016]}}}
+          \caption{{\footnotesize Style transfer \newline {\scriptsize [Gatys et al., 2016]}}}
         \end{subfigure}
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{stylegan}
-          \caption{{\footnotesize Génération de visages (\emph{StyleGAN}) \newline {\scriptsize [Karras et al., 2019]}}}
+          \caption{{\footnotesize Face generation (\emph{StyleGAN}) \newline {\scriptsize [Karras et al., 2019]}}}
         \end{subfigure}        
         \begin{subfigure}[t]{0.19\linewidth}\centering
           \includegraphics[width=\linewidth]{stable-diffusion}
-          \caption{{\footnotesize \emph{Text-to-image} (Diffusion) \newline {\tiny [Rombach et al., 2022]}}}
+          \caption{{\footnotesize Text-to-image (Diffusion) \newline {\tiny [Rombach et al., 2022]}}}
         \end{subfigure}
       \end{figure}
 \end{frame}
 
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Le prix de la performance}
+  \framesubtitle{The price of performance}
   \begin{figure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{gatys}
-      \caption{{\emph{Neural style transfer}\newline[Gatys et al., 2016]\newline 15M de paramètres\newline 2 images}}
+      \caption{{\emph{Neural style transfer}\newline[Gatys et al., 2016]\newline 15M parameters\newline 2 images}}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{stylegan}                
-      \caption{{\emph{StyleGAN}\newline[Karras et al., 2019]\newline 30M de paramètres\newline 70,000 images}}
+      \caption{{\emph{StyleGAN}\newline[Karras et al., 2019]\newline 30M parameters\newline 70,000 images}}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{esser}                      
-      \caption{\emph{Taming transformers}\newline[Esser et al., 2021]\newline 800M de paramètres\newline 100,000 images}
+      \caption{\emph{Taming transformers}\newline[Esser et al., 2021]\newline 800M parameters\newline 100,000 images}
     \end{subfigure}
     \begin{subfigure}[t]{0.24\linewidth}\centering
       \includegraphics[width=\linewidth]{stable-diffusion}
-      \caption{\emph{Latent Diffusion}\newline[Rombach et al., 2022]\newline 1Mrd de paramètres\newline 2Mrd images}
+      \caption{\emph{Latent Diffusion}\newline[Rombach et al., 2022]\newline 1Mrd parameters\newline 2Mrd images}
     \end{subfigure}
   \end{figure}
   \begin{exampleblock}{}
-    \centering
-    + de qualité, + de capacité $\Rightarrow$ \textbf{+ de \alert{paramètres}, + de \alert{données}}  d'entraînement
+    Quality, performance $\Rightarrow$ \textbf{More \alert{parameters}, more training \alert{data}}
   \end{exampleblock}
 \end{frame}
 
 
-\subsection{Enjeux}
+\subsection{Challenges}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Enjeux}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      \begin{customblock}{Enjeux scientifiques}
+      \begin{customblock}{Scientific}
         \begin{itemize}
-        \item Contraintes matérielles
-        \item Reproductibilité
+        \item Hardware requirements
+        \item Reproductibility
         \end{itemize}
       \end{customblock}
       \pause
-      \begin{block}{Enjeux éthiques}
+      \begin{block}{Ethic}
         \begin{itemize}
-        \item Sécurité des données
-        \item Violation des droits d'auteurs
+        \item Data security
+        \item Copyright theft
         \end{itemize}
       \end{block}
     \end{column}
     \begin{column}{0.5\linewidth}
       \pause
-      \begin{alertblock}{Enjeux de société}
+      \begin{alertblock}{Society}
         \begin{itemize}
-        \item Désinformation
-        \item Propagande
+        \item Fake news
+        \item Propaganda
         \end{itemize}
       \end{alertblock}
       \pause
-      \begin{exampleblock}{Enjeux environementaux}
+      \begin{exampleblock}{Environment}
         \begin{itemize}
-        \item Coût colossal en énergie (fermes de GPUs, entraînement + utilisation)
+        \item Electricity consumption
         \end{itemize}
       \end{exampleblock}
     \end{column}
   \end{columns}
 \end{frame}
 
-\subsection{Modèles légers}
+\subsection{Lightweight models}
 % \begin{frame}{\secname~- \subsecname}
 %   \begin{exampleblock}{\centering Quels critères pour faire face à ces enjeux ?}
 %     \begin{itemize}
@@ -157,20 +153,20 @@
 % \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Objectifs}
+  \framesubtitle{Goals}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      \begin{customblock}{Modèles légers / frugaux}
+      \begin{customblock}{Lightweight models}
         \begin{itemize}
-        \item \small Paramètres
-        \item \small Données d'entraînement
-        \item \small Opérations possibles
+        \item \small Parameters
+        \item \small Training data
+        \item \small Operations
         \end{itemize}
       \end{customblock}
       \begin{alertblock}{Challenges}
         \begin{itemize}
-        \item \small Compromis qualité/diversité
-        \item \small Champ d'action limité (ex: 1 seule image)
+        \item \small Quality/Diversity
+        \item \small Range of action (ex: single image)
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -180,7 +176,7 @@
         \begin{subfigure}{\linewidth}
           \centering
           \includegraphics[width=0.4\linewidth]{fastgan.png}
-          \caption{Génération \emph{few-shot} (FastGAN) [Liu et al., 2020]}
+          \caption{\emph{Few-shot} generation (FastGAN) [Liu et al., 2020]}
         \end{subfigure}
         
         \begin{subfigure}{\linewidth}
@@ -194,23 +190,23 @@
 \end{frame}
 
 
-\subsection{Modèles explicables}
+\subsection{Explainable models}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Objectifs}
+  \framesubtitle{Goals}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{block}{Modèles explicables}        
         \begin{itemize}
-        \item \small Sujet émergent
-        \item \small Comprendre comment et pourquoi 
-        \item \small Connaître les capacités et limites
-        \item \small Offrir des garanties (biais, sécurité des données, ...)
+        \item \small Emerging topic
+        \item \small Understand how and why
+        \item \small State the capacity and limits
+        \item \small Present proofs (bias, data security, ...)
         \end{itemize}
       \end{block}
-      \begin{alertblock}{Limitations et Challenges}
+      \begin{alertblock}{Limits and Challenges}
         \begin{itemize}
-        \item \small \emph{A posteriori}
-        \item \small Inexistant pour les modèles génératifs
+        \item \small \emph{Post-hoc}
+        \item \small Nothing for generative models
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -218,41 +214,40 @@
       \begin{figure}
         \centering
         \includegraphics[width=0.5\linewidth]{jeanneret}
-        \caption{{Explications contrefactuelles [Jeanneret et al., 2023]}}
+        \caption{{Counterfactual explanations [Jeanneret et al., 2023]}}
       \end{figure}
     \end{column}
   \end{columns}    
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \begin{customblock}{\centering Problématique}
+  \begin{customblock}{\centering Main problematic}
     \centering
-    Peut-on concilier la qualité de génération (photoréalisme) avec
-    les critères de légereté et d'explicabilité des modèles ?
+    Can we balance quality (photorealism) with lightweightness and explainability of models?
   \end{customblock}
 \end{frame}
 
-\subsection{Méthodes ``hybrides''}
+\subsection{``Hybrid'' models}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Motivation} 
+  \framesubtitle{Motivation}
   \begin{columns}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Modèles profonds}
+      \begin{block}{Deep models}
         \begin{itemize}
-        \item \small Photoréalistes (qualité)
-        \item \small Génération variée (diversité)
-        \item \small Non-explicables et complexes
+        \item \small Photorealism (quality)
+        \item \small Diverse generation
+        \item \small Non-explainable and complex
         \end{itemize}
       \end{block}      
     \end{column}
 
     \pause
     \begin{column}{0.5\linewidth}
-      \begin{customblock}{Méthodes frugales}
+      \begin{customblock}{Lightweight models}
         \begin{itemize}
-        \item \small Légères, explicables
-        \item \small Compromis qualité/diversité
-        \item \small Champ d'applications restreint
+        \item \small Lightweight, explainable
+        \item \small Compromise on quality/diversity
+        \item \small Smaller range of applications
         \end{itemize}
       \end{customblock}      
     \end{column}    
@@ -260,37 +255,35 @@
 
   \vfill
   \pause
-  \begin{exampleblock}{\centering Des méthodes hybrides pour la génération d'images}
+  \begin{exampleblock}{\centering Hybrid methods for image generation}
     \centering
-    \alert{Idée}~: Combiner méthodes frugales et modèles profonds pour
-    conserver les propriétés pertinentes de chacun
+    \alert{Idea}: Combine lightweight methods and deep models in order to preserve the best of both worlds
   \end{exampleblock}
   \begin{itemize}
     \centering
-    \item Une piste encore peu explorée...!
+    \item A concept yet to be explored...!
   \end{itemize}
 \end{frame}
 
-\subsection{Méthodes ``hybrides''}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Plan}
   \begin{columns}
     \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-        \item \small 1. Exposer \alert{qualitativement} leur pertinence dans le transfert de style
+        \item \small 1. \alert{Qualitatively} highlight their relevance in artistic style transfer
       \end{itemize}
     \end{column}
     \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-      \item \small 2. Démontrer leur \alert{efficacité} dans la génération \emph{few-shot} de visages
+      \item \small 2. Show their \alert{efficiency} for few-shot face generation
       \end{itemize}      
     \end{column}
     \begin{column}{0.3\linewidth}
       \begin{itemize}
         \centering
-      \item \small 3. Proposer une voie pour les \alert{généraliser} sur plus de données variées
+      \item \small 3. Propose ways to \alert{generalize} them on diverse dataset
       \end{itemize}      
     \end{column}
   \end{columns}
@@ -299,7 +292,7 @@
 
 % ============================================
 % ============================================
-\section{Concepts préliminaires}
+\section{Preliminary concepts}
 % Justifier leur utilisation
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
@@ -307,15 +300,15 @@
   \end{beamercolorbox}
 \end{frame}
 
-\subsection{Encodeurs}
+\subsection{Encoders}
 \begin{frame}{\secname~- \subsecname}
   \framesubtitle{Principe}
   \begin{columns}
     \begin{column}{0.4\linewidth}
-      \begin{block}{Encodeurs}
+      \begin{block}{Encoders}
         \begin{itemize}
-        \item Entraînement supervisé (classification)
-        \item Usage : features, métriques
+        \item Supervised training (classification)
+        \item Use case: features, metrics
         \end{itemize}
       \end{block}
     \end{column}
@@ -329,20 +322,20 @@
   \end{columns}
 \end{frame}
 
-\subsection{Auto-encodeurs}
+\subsection{Auto-encoders}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \centering
     \includegraphics[width=0.7\linewidth]{4.png}
-    \caption{Schéma classique d'un auto-encodeur}
+    \caption{Scheme of an auto-encodeur}
     \begin{block}{Reconstruction}
       \centering
       \begin{itemize}        
-      \item Optimisation d'un objectif de reconstruction
+      \item Optimisation of a reconstruction objective
       \end{itemize}
       $\underset{E,D}{\min}\ \underset{x \sim p(x)}{\mathbb{E}}\left[\mathcal{L}_{\text{rec}}(x,D(E(x)))\right]$
       \begin{itemize}
-      \item Représentation \alert{latente} et compacte
+      \item \alert{Latent} and compact representation
       \end{itemize}
 
     \end{block}
@@ -350,11 +343,11 @@
   
 \end{frame}
 
-\subsection{Méthodes à patchs}
+\subsection{Patch-based methods}
 % Alléger déf
 % parler de patchmatch
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Définition}
+  \framesubtitle{Definition}
   \begin{columns}
     \begin{column}{0.6\linewidth}
       \begin{figure}
@@ -366,9 +359,9 @@
     
     \begin{column}{0.4\linewidth}
       \begin{itemize}
-      \item Synthèse de texture [Efros et Leung, 1999], [Ashikhmin et al., 2001]
+      \item Texture synthesis [Efros et Leung, 1999], [Ashikhmin et al., 2001]
         \vspace{1em}
-      \item Recherche de patch plus proche voisin
+      \item Patch nearest neighbor search
       \item \emph{PatchMatch} [Barnes et al., 2009]
       \end{itemize}
       % \emph{Image} : $x \in \mathbb{R}^{W \times H \times C}$
@@ -410,14 +403,14 @@
 % Méthode de génération pour les méthodes à patchs
 % Notation R o W
 \begin{frame}{\secname~- \subsecname} 
-  \framesubtitle{Affectation, Warping}
+  \framesubtitle{Assignment, Warping}
   \begin{columns}
     \begin{column}{0.55\linewidth}
-      \begin{exampleblock}{Carte d'affectation}
+      \begin{exampleblock}{Assignment map}
         \begin{itemize}
-        \item Permet l'agrégation/le \emph{warping} de patchs
-        \item (Re)construire une image à partir d'une \alert{affectation de coordonnées}
-        \item Génération explicable
+        \item Aggregation/\emph{warping} of patches
+        \item (Re)construct an image from an \alert{assignment of coordinates}
+        \item Explainable generation
         \end{itemize}
       \end{exampleblock}
     \end{column}
@@ -425,8 +418,8 @@
       \begin{figure}
         \centering
         \includegraphics[height=0.6\textheight]{nnf.png}
-        \caption{(a) Image $x = x \circ W_b$ \quad(b) Identité $W_b$
-          \\ (c) Image $y = x \circ W_d$ \quad(d) Carte $W_d$}
+        \caption{(a) Image $x = x \circ W_b$ \quad(b) Identity $W_b$
+          \\ (c) Image $y = x \circ W_d$ \quad(d) Map $W_d$}
       \end{figure}
     \end{column}
   \end{columns}
@@ -435,7 +428,7 @@
 
 % ============================================
 % ============================================
-\section{Transfert de style par contrainte de patchs}
+\section{Style transfer with constrained patches}
 \begin{frame}
   \vfill
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
@@ -454,7 +447,7 @@
   \end{itemize}
 \end{frame}
 
-\subsection{Contexte}
+\subsection{Context}
 % Image I, R, noter J
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
@@ -467,37 +460,36 @@
         \end{subfigure}
         \begin{subfigure}{0.45\linewidth}\centering        
           \includegraphics[width=0.6\linewidth]{balloon/balloon_s}
-          \caption{Contenu $I$}
+          \caption{Content $I$}
         \end{subfigure}
 
         \begin{subfigure}{0.8\linewidth}\centering
           \includegraphics[width=0.9\linewidth]{balloon/gatys.png}
-          \caption{Synthèse $J$}
+          \caption{Synthesis $J$}
         \end{subfigure}
       \end{figure}
     \end{column}
     \begin{column}{0.6\linewidth}
-      \begin{customblock}{Principe du transfert de style}
+      \begin{customblock}{Definition}
         \begin{itemize}
-        \item \small Style : \alert{caractéristiques esthétiques}
-        \item \small Transfert de style : style d'une
-          image de \alert{référence} $R$ vers une image de \alert{contenu} $I$ (\emph{Input})
-        \item \small Challenge : Modéliser un style
+        \item \small Style : \alert{aesthetical features}
+        \item \small Style transfer : style from a \alert{reference} image $R$ onto
+          a \alert{content} image $I$ (\emph{Input})
+        \item \small Challenge : Modelize a style
         \end{itemize}    
       \end{customblock}
       \begin{block}{\emph{Neural style transfer} [Gatys et al., 2016]}
         \begin{itemize}
-        \item \small Optimise les pixels d'une image selon les
-          \emph{features} \emph{VGG-16} [Simonyan et al., 2014]
-        \item \small Procédé \alert{long} (5-15 min. sur GPU par image)
-        \item \small À répéter pour chaque différent style/contenu
+        \item \small Optimization over pixels on
+          \emph{VGG-16} \emph{features}  [Simonyan et al., 2014]
+        \item \small \alert{Long} task (5-15 min./image on GPU)
         \end{itemize}
       \end{block}
     \end{column}
   \end{columns}
 \end{frame}
 
-\subsection{Méthode}
+\subsection{Method}
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
     \begin{column}{0.4\linewidth}
@@ -509,25 +501,25 @@
         \end{subfigure}
         \begin{subfigure}{0.45\linewidth}\centering        
           \includegraphics[width=0.6\linewidth]{balloon/balloon_s}
-          \caption{Contenu $I$}
+          \caption{Content $I$}
         \end{subfigure}
 
         \begin{subfigure}{0.8\linewidth}\centering
           \includegraphics[width=0.9\linewidth]{balloon/ours.png}
-          \caption{Synthèse $J$}
+          \caption{Synthesis $J$}
         \end{subfigure}
       \end{figure}
     \end{column}
     \begin{column}{0.6\linewidth}
-      \begin{exampleblock}{Notre méthode}
+      \begin{exampleblock}{Our method}
         \begin{itemize}
-        \item Méthode à patchs
-        \item Méthode multi-échelle
-        \item Échelle grossière à fine ($k=N..0$)
+        \item Patch-based method
+        \item Multi-scale
+        \item Coarse to fine ($k=N..0$)
           \vspace{1em}
           \pause
-        \item \alert{Contrainte d'occurrence}
-        \item \alert{Métriques de patchs}
+        \item \alert{Occurence constraint}
+        \item \alert{Experiments on patch metrics}
         \end{itemize}
       \end{exampleblock}
     \end{column}
@@ -538,7 +530,7 @@
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{5.pdf}
-    \caption{Schéma du transfert de style à une échelle $k$.}
+    \caption{Scheme of the style transfer at a scale $k$.}
   \end{figure}
 \end{frame}
 
@@ -546,7 +538,7 @@
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{5_1}
-    \caption{Schéma du transfert de style à une échelle $k$.}
+    \caption{Scheme of the style transfer at a scale $k$.}
   \end{figure}
 \end{frame}
 
@@ -554,7 +546,7 @@
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{5_2}
-    \caption{Schéma du transfert de style à une échelle $k$.}
+    \caption{Scheme of the style transfer at a scale $k$.}
   \end{figure}
 \end{frame}
 
@@ -562,7 +554,7 @@
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{5_3}
-    \caption{Schéma du transfert de style à une échelle $k$.}
+    \caption{Scheme of the style transfer at a scale $k$.}
   \end{figure}
 \end{frame}
 
@@ -570,18 +562,18 @@
   \begin{figure}
     \centering
     \includegraphics[width=\linewidth]{5_4}
-    \caption{Schéma du transfert de style à une échelle $k$.}
+    \caption{Scheme of the style transfer at a scale $k$.}
   \end{figure}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Passage à l'échelle}
+  \framesubtitle{Upscaling}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{itemize}
-      \item $W_k$~: carte des patchs plus proches voisins de $J_k$ dans $R_k$.
-      \item $W_k$ contient des \alert{coordonnées}
-      \item Passage d'échelle d'un ratio $r > 1$
+      \item $W_k$~: nearest neighbor mapping from $R_k$ to $J_k$.
+      \item $W_k$ contains \alert{coordinates}
+      \item Upscaling ratio $r > 1$
       \end{itemize}
       \begin{figure}
         \includegraphics[width=0.8\linewidth]{5_me.png}
@@ -589,15 +581,15 @@
 
     \end{column}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Passage à l'échelle}
+      \begin{block}{Upscaling}
         \centering
         $W\!\!\uparrow^r(p) = \floor*{rW\left(\floor*{\frac{p}{r}}\right) + p - r\floor*{\frac{p}{r}}}$
       \end{block}
       \vspace{1em}
-      \begin{exampleblock}{Avantages}
+      \begin{exampleblock}{Pros}
         \begin{itemize}
-        \item Opération immédiate
-        \item Pas de perte de qualité
+        \item Immediate
+        \item No quality loss
         \end{itemize}
       \end{exampleblock}
     \end{column}
@@ -605,15 +597,15 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Pénalisation d'occurrence}
+  \framesubtitle{Occurrence penalty}
   \begin{columns}
     \begin{column}{0.5\linewidth}
         \begin{itemize}
-        \item Recherche de + proches voisins \emph{``trop''} efficaces
-        \item Équilibrer l'utilisation des patchs de style
+        \item Nearest neighbor search is \emph{too} efficient
+        \item Share the usage of patches more evenly
         \end{itemize}
 
-      \begin{block}{Distance de patchs pénalisée}
+      \begin{block}{Penalized patch distance}
         \centering
         \small
         $W_k^* \in \argmin_{W \in F}\ \sum_{p \in \Omega} \frac{D_k(p)}{Var(D_k)} - \lambda_W \circ W(p)$
@@ -621,8 +613,8 @@
         $\text{avec} \quad D_k(p) = ||\tilde{J}_k(p) - R_k \circ W(p)||^2$
       \end{block}
       \begin{itemize}
-      \item $\lambda_W \circ W(p) < 0$~: Patch en $p$ pénalisé
-      \item $\lambda_W \circ W(p) > 0$~: Patch en $p$ favorisé
+      \item $\lambda_W \circ W(p) < 0$~: Patch $p$ is penalized
+      \item $\lambda_W \circ W(p) > 0$~: Patch $p$ is favored
       \end{itemize}
     \end{column}
     \begin{column}{0.5\linewidth}
@@ -635,10 +627,10 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Pénalisation d'occurrence}
+  \framesubtitle{Occurrence penalty}
   \begin{columns}
     \begin{column}{0.5\linewidth}      
-      \begin{block}{Actualisation de la pénalisation}
+      \begin{block}{Penalty score update}
         \small
         \begin{center}
           $\lambda_W(y) \leftarrow \lambda_W(y) + \delta \partial_y \lambda_W(y) $
@@ -649,9 +641,9 @@
         \end{center}
         
         \begin{itemize}
-        \item Initialisé à 0 pour chaque $y \in \Omega_R$.
-        \item Méthode inspirée par le transport optimal
-        \item Durant les différentes itérations de \emph{PatchMatch} [Barnes et al., 2009]
+        \item Initialized to 0 for each $y \in \Omega_R$.
+        \item Inspired by optimal transport
+        \item Applied during different iterations of \emph{PatchMatch} [Barnes et al., 2009]
         \end{itemize}
       \end{block}    
     \end{column}
@@ -665,17 +657,17 @@
   \end{columns}
 \end{frame}
 
-\subsection{Résultats}
+\subsection{Results}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \begin{subfigure}{0.47\linewidth}
       \includegraphics[width=\linewidth]{balloon/ours.png}
-      \caption{Notre méthode ($\Phi$ : RGB \& Gradients)}
+      \caption{\textbf{Ours} ($\Phi$ : RGB \& Gradients)}
     \end{subfigure}
     \begin{subfigure}{0.45\linewidth}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/balloon_s.png}
-        \caption{Contenu}
+        \caption{Content}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{balloon/starry_night_s.jpg}
@@ -698,12 +690,12 @@
   \begin{figure}
     \begin{subfigure}{0.47\linewidth}
       \includegraphics[width=\linewidth]{tuebingen/ours.png}
-      \caption{Notre méthode ($\Phi$ : \emph{VGG-16}, relu\_1\_1)}
+      \caption{\textbf{Ours} ($\Phi$ : \emph{VGG-16}, relu\_1\_1)}
     \end{subfigure}
     \begin{subfigure}{0.45\linewidth}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/tuebingen_s.jpg}
-        \caption{Contenu}
+        \caption{Content}
       \end{subfigure}
       \begin{subfigure}{0.45\linewidth}
         \includegraphics[width=\linewidth]{tuebingen/abstract_s}
@@ -732,11 +724,11 @@
       \end{figure}
     \end{column}
     \begin{column}{0.48\linewidth}
-      \begin{block}{Pertinence des métriques}
+      \begin{block}{Relevance of metrics}
         \begin{itemize}
         \item \emph{``Patch-features''} $\Phi$
-        \item Mise en évidence : stylisation d'une image stylisée
-        \item Caractéristiques stylistiques capturées différentes selon $\Phi$
+        \item Experiment: transfer over an stylized image
+        \item Each $\Phi$ captures something different
         \end{itemize}
       \end{block}
     \end{column}
@@ -746,7 +738,7 @@
 
 % ============================================
 % ============================================
-\section{Patchs latents pour la génération}
+\section{Latent patches for image generation}
 \begin{frame}
   \vfill
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
@@ -796,11 +788,11 @@
     \end{column}
     \begin{column}{0.7\linewidth}
       \begin{itemize}
-      \item Extension de la méthode pour la génération
-      \item Plusieurs images
-      \item Visages recalés $\rightarrow$ Patchs alignés
+      \item Method extended for generation
+      \item Multiple images
+      \item Realigned faces $\rightarrow$ Aligned patches
         \vspace{1em}
-      \item Besoin de \alert{régularisation}
+      \item Need of \alert{regularization}
       \end{itemize}
     \end{column}
   \end{columns}
@@ -812,12 +804,12 @@
   \begin{columns}
     \begin{column}{0.2\linewidth}
       \begin{itemize}
-      \item \small Auto-encodeur
-      \item \small Adversaire
-      \item \small Quantifié
+      \item \small Auto-encoder
+      \item \small Adversarial
+      \item \small Quantified
       \item \small Spatial
         \vspace{1em}
-      \item \small Génération par un \emph{Transformer}
+      \item \small Generation with a \emph{Transformer}
       \end{itemize}
     \end{column}
     \begin{column}{0.8\linewidth}
@@ -829,50 +821,50 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Propriétés}
+  \framesubtitle{Properties}
   \begin{figure}
     \includegraphics[width=0.7\linewidth]{16.png}
   \end{figure}
   \begin{itemize}
-  \item \alert{Estompe les bords} de manière photoréaliste
-  \item \alert{Harmonise} les couleurs/textures du visage.
+  \item Photorealistic \alert{seamless blending}
+  \item \alert{Harmonize} colors and textures
 \end{itemize}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Le décodeur est-il un générateur ?}
+  \framesubtitle{Is the decoder a generator?}
   \begin{figure}
     \includegraphics[width=0.6\linewidth]{15.png}
   \end{figure}
   \begin{itemize}
-  \item L'auto-encodeur \alert{n'est pas} un générateur à lui seul.        
+  \item The decoder \alert{is not} a generator by itself.
   \end{itemize}
 \end{frame}
 
 
-\subsection{Méthode}
+\subsection{Method}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \includegraphics[width=\linewidth]{11.pdf}
   \end{figure}
   \begin{itemize}
-  \item $E, D$ : VQGAN pré-entraîné sur FFHQ
-  \item $\mathcal{X}$ : \emph{Dataset} limité
-  \item $R$ : Réduction de dim. par ACP sur les canaux
-  \item $G$ : \alert{Génération d'une représentation latente par patchs}
+  \item $E, D$ : VQGAN pre-trained over FFHQ
+  \item $\mathcal{X}$ : Limited \emph{dataset}
+  \item $R$ : Dimension reduction with an PCA over the channels
+  \item $G$ : \alert{Latent representation generator with a patch-based method}
   \end{itemize}
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Génération séquentielle auto-régressive}
+  \framesubtitle{Auto-regressive sequential generation}
   \begin{figure}
     \includegraphics[width=0.8\linewidth]{12.pdf}
   \end{figure}
 \end{frame}
 
-\subsection{Expériences}
+\subsection{Experiments}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Résultats}
+  \framesubtitle{Results}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{figure}
@@ -890,11 +882,11 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Explicable par design}
+  \framesubtitle{Explainable by design}
   \begin{columns}
     \begin{column}{0.4\linewidth}
       \begin{itemize}
-      \item Relation \alert{source} et \alert{génération} immédiate
+      \item Relation between \alert{source} and \alert{generation} is immediate
       \end{itemize}
     \end{column}
     \begin{column}{0.6\linewidth}
@@ -905,9 +897,9 @@
   \end{columns}  
 \end{frame}
 
-\subsection{Évaluation}
+\subsection{Evaluation}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaison qualitative}
+  \framesubtitle{Qualitative comparison}
   \begin{columns}
     \begin{column}{0.75\linewidth}
       \begin{figure}
@@ -924,15 +916,15 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaison quantitative - FID}
+  \framesubtitle{Quantitative comparison - FID}
   \begin{figure}
     \includegraphics[width=0.8\linewidth]{fid-vs-subset.pdf}
   \end{figure}
 \end{frame}
 
-\subsection{Généralisation}
+\subsection{Generalization}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Tentative de généralisation}
+  \framesubtitle{Attempts}
   \begin{columns}
     \begin{column}{0.5\linewidth}
       \begin{figure}
@@ -944,13 +936,13 @@
     \begin{column}{0.5\linewidth}
       \begin{exampleblock}{\emph{LatentPatch}}
         \begin{itemize}
-        \item Parfait en \emph{few-shot} : visages perceptuellement proches
+        \item Works well in \emph{few-shot} : faces perceptually close
         \end{itemize}
       \end{exampleblock}
-      \begin{alertblock}{\emph{LatentPatch} généralisé}
+      \begin{alertblock}{Generalized \emph{LatentPatch}}
         \begin{itemize}
-        \item Sensible aux échantillons qui varient
-        \item Manque de cohérence spatiale
+        \item Weak to diverse samples
+        \item Lack of spatial coherency overall
         \end{itemize}
       \end{alertblock}
     \end{column}
@@ -959,7 +951,7 @@
 
 % ============================================
 % ============================================
-\section{Modèle de mélange gaussien latents}
+\section{Latent Gaussian mixture models}
 % INtroduire le problème
 % Cohérence spatiale
 % Modèle gaussien pour capturrer
@@ -984,25 +976,25 @@
   \begin{figure}\centering
     \begin{subfigure}{0.3\linewidth}\centering
       \includegraphics[width=0.8\linewidth]{random_noise_q}
-      \caption{Bruit blanc latent}
+      \caption{White latent noise}
     \end{subfigure}
     \begin{subfigure}{0.3\linewidth}\centering
       \includegraphics[width=0.8\linewidth]{random_lr-gmm}
-      \caption{Bruit corrélé latent}
+      \caption{Correlated noise latent}
     \end{subfigure}
   \end{figure}
   \begin{itemize}\centering
-  \item \alert{Idée}: Contraindre les \alert{corrélations spatiales} 
+  \item \alert{Idea}: Constrain the \alert{spatial correlation} 
   \end{itemize}
-  \begin{exampleblock}{Modèles de mélange gaussien (\emph{GMM})}
+  \begin{exampleblock}{Gaussian Mixture Models (\emph{GMM})}
     \begin{itemize}
-    \item Exploite les covariances des données
-    \item Prend en compte la diversité des échantillons
+    \item Modelize the covariance of the data
+    \item Handle diverse samples
     \end{itemize}
   \end{exampleblock}  
 \end{frame}
 
-\subsection{Méthode}
+\subsection{Method}
 \begin{frame}{\secname~- \subsecname}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{lrgmm.pdf}
@@ -1011,16 +1003,16 @@
     \begin{column}{0.5\linewidth}
       \begin{exampleblock}{Principe}
         \begin{itemize}
-        \item \small Apprendre un \emph{GMM} sur les représentations latentes
-        \item \small Échantillonner le \emph{GMM} à un faible rang comme initialisation
+        \item \small Learn a \emph{GMM} over the latent representation
+        \item \small Sample the \emph{GMM} at low rank as initialization
         \end{itemize}
       \end{exampleblock}
     \end{column}
     \begin{column}{0.5\linewidth}
         \begin{exampleblock}{}
         \begin{itemize}
-        \item \small Projeter chaque patch au plus proche voisin
-        \item \small Décoder
+        \item \small Project each latent patch to its NN
+        \item \small Decode
         \end{itemize}
       \end{exampleblock}
     \end{column}
@@ -1029,14 +1021,14 @@
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Échantillonnage à faible rang} 
+  \framesubtitle{Low rank sampling} 
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{ablation_dk.png}
   \end{figure}  
 \end{frame}
 
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Raffinement par recherche de patchs plus proches voisins}
+  \framesubtitle{Refining through NN step}
   \begin{figure}
     \includegraphics[width=0.9\linewidth]{ablation_nn.png}
   \end{figure}    
@@ -1044,7 +1036,7 @@
 
 \subsection{Résultats}
 \begin{frame}{\secname~- \subsecname}
-  \framesubtitle{Comparaisons qualitative}
+  \framesubtitle{Qualitative comparisons}
   \begin{figure}
     \includegraphics[width=\linewidth]{comp_img}
   \end{figure}
@@ -1052,29 +1044,29 @@
 
 % ============================================
 % ============================================
-\section{Conclusion et Perspectives}
+\section{Conclusion and Perspectives}
 \begin{frame}
   \begin{beamercolorbox}[sep=15pt,center,shadow=true,rounded=true]{title}
     \LARGE\bfseries \secname
   \end{beamercolorbox}
 \end{frame}
 
-\subsection{Résumé}
+\subsection{Summary}
 \begin{frame}{\secname~- \subsecname}
-  \begin{customblock}{Qualité, légèreté, explicabilité}
+  \begin{customblock}{Quality, lightweightness, explainability}
     \begin{itemize}
-    \item Problème : la croissance des modèles 
-    \item La légèreté et l'explicabilité sont souhaitables
-    \item Les modèles hybrides peuvent répondre à ces critères
+    \item Problem: the growing of models
+    \item Lightweightness and Explainability are potential answers
+    \item Hybrid models can answer to these criterion
     \end{itemize}
   \end{customblock}
 
   \pause
-  \begin{exampleblock}{Viabilité des modèles hybrides}
+  \begin{exampleblock}{Relevance of hybrid models}
     \begin{itemize}  
-    \item 1. Les représentations des réseaux sont pertinents avec des modèles frugaux
-    \item 2. Le rapport qualité/temps de calculs peut être à notre avantage
-    \item 3. La généralisation à des échantillons variés est possible
+    \item 1. Deep representations are still relevant when combined with lightweight models
+    \item 2. The compromise quality/computation time is at our advantage
+    \item 3. Generalization to varied samples is possible
     \end{itemize}
   \end{exampleblock}
 \end{frame}
@@ -1089,13 +1081,13 @@
       \end{figure}
     \end{column}
     \begin{column}{0.5\linewidth}
-      \begin{block}{Perspective 1 – S'affranchir des gros réseaux}
+      \begin{block}{Perspective 1 – Reduce the dependency on deep models}
         \begin{itemize}
-        \item \alert{Limite} : Dépendance à \emph{VQGAN}
-        \item Propriétés intéressantes : harmonisation, agrégation texturée
+        \item \alert{Limit}: Depedency on \emph{VQGAN}
+        \item Interesting properties: harmonization, textured aggregation
 
-        \item \alert{Idée} : Apprendre des réseaux plus légers qui isolent ces propriétés
-        \item Sans réseau de neurones ?
+        \item \alert{Idea}: Learn lightweight neural networks to encapsulate these properties
+        \item Non-parametric approach?
         \end{itemize}
 
       \end{block}
@@ -1106,14 +1098,14 @@
 \begin{frame}{\secname~- \subsecname}
   \begin{columns}
     \begin{column}{0.6\linewidth}
-      \begin{block}{Perspective 2 – Étendre les capacités du modèle}        
+      \begin{block}{Perspective 2 – Expand the capacity of the model}
         \begin{itemize}
-        \item \alert{Limite} : Génération de visages alignés seulement
-        \item D'autres modalités non-triviales ?
+        \item \alert{Limit}: Generation of aligned faces only
+        \item What about other modalities?
 
-        \item Tests sur auto-encodeurs génériques et visages non-recalés non concluants
-        \item \alert{Idée} : Déléguer la tâche à un réseau léger
-          (initialisation), puis raffiner avec des patchs
+        \item Tests on generic auto-encoders and non-aligned faces were inconclusive
+        \item \alert{Idea}: Delegate the initialization to a neural
+          network and refine with patches
         \end{itemize}
       \end{block}
     \end{column}
